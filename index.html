@@ -41,10 +41,32 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;str
 .toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,30px);background:var(--g);color:var(--ink);padding:10px 18px;border-radius:12px;font-weight:600;opacity:0;transition:.3s;z-index:90;pointer-events:none}.toast.on{opacity:1;transform:translate(-50%,0)}
 .prev{width:100%;height:130px;object-fit:cover;border-radius:12px;border:1px solid var(--ln);margin-top:6px;background:var(--sf2)}
 #pp{position:fixed;inset:0;z-index:120;display:grid;place-items:center;background:#0008;opacity:0;visibility:hidden;transition:.25s}#pp.on{opacity:1;visibility:visible}.pb{background:var(--sf);border:1px solid var(--g);border-radius:22px;padding:26px 32px;text-align:center;max-width:300px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}.pb.bad{border-color:var(--rd)}.pb b{display:block;margin-top:10px}.pb small{color:var(--mu)}.pc{width:54px;height:54px;border-radius:50%;background:var(--g);color:var(--ink);font:700 28px/54px Oswald;margin:auto}.bad .pc{background:var(--rd);color:#fff}@keyframes pop{from{transform:scale(.6);opacity:0}}
-#login{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:20px}#login .card{width:100%;max-width:360px}
+#login{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:18px;overflow:auto;transition:opacity .55s,transform .55s}#login.out{opacity:0;transform:scale(1.05);pointer-events:none}
+#login:before,#login:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;filter:blur(90px);opacity:.28;animation:fl 9s ease-in-out infinite alternate;pointer-events:none}
+#login:before{background:var(--g);top:-120px;left:-100px}#login:after{background:var(--g2);bottom:-140px;right:-100px;animation-delay:-4s}@keyframes fl{to{transform:translate(60px,40px) scale(1.15)}}
+.lg{position:relative;z-index:1;display:grid;width:100%;max-width:410px;background:color-mix(in srgb,var(--sf) 88%,transparent);backdrop-filter:blur(18px);border:1px solid var(--ln);border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:pop .6s cubic-bezier(.34,1.4,.64,1)}
+.lg.shake{animation:shk .5s}@keyframes shk{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+.lgb{display:none;position:relative;flex-direction:column;justify-content:center;gap:18px;padding:44px;background:linear-gradient(150deg,var(--g2),#0b3d1c 70%);color:#fff;overflow:hidden}
+.lgb:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;border:48px solid #ffffff12;right:-90px;bottom:-90px}
+.lgb img{width:74px;height:74px;object-fit:contain;filter:drop-shadow(0 6px 14px #0006)}.lgb h1{font:700 34px/1.05 Oswald;letter-spacing:.04em}.lgb h1 span{color:var(--g)}.lgb p{opacity:.8}
+.lgb li{list-style:none;display:flex;gap:10px;align-items:center;padding:6px 0;animation:up .6s both}.lgb li:before{content:"✓";width:22px;height:22px;border-radius:50%;background:#ffffff26;display:grid;place-items:center;font-size:12px;flex:none}
+.lgf{padding:34px 28px 30px}.lgf .mob{display:flex;align-items:center;gap:10px;margin-bottom:20px}.lgf .mob img{width:46px;height:46px;object-fit:contain}.lgf .mob b{font:700 20px Oswald;letter-spacing:.04em}.lgf .mob b span{color:var(--g)}
+.lgf h2{margin-bottom:4px}.lgf .sub{color:var(--mu);margin-bottom:14px}
+.fi{position:relative}.fi svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mu);width:19px;height:19px;pointer-events:none}.fi input{padding:13px 44px 13px 42px;border-radius:14px}.fi .eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;color:var(--mu);display:grid;place-items:center}
+#lgerr{min-height:22px;color:var(--rd);font-size:13.5px;margin:10px 0 2px;animation:up .3s both}
+.lgbtn{position:relative;width:100%;height:50px;border-radius:14px;background:linear-gradient(120deg,var(--g2),var(--g));color:var(--ink);font-weight:700;font-size:16px;overflow:hidden;transition:transform .15s,box-shadow .3s;box-shadow:0 8px 24px color-mix(in srgb,var(--g) 35%,transparent)}.lgbtn:active{transform:scale(.97)}.lgbtn:disabled{cursor:default}
+.lgbtn .sp,.lgbtn .ck{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:.25s}.lgbtn .sp:after{content:"";width:22px;height:22px;border:3px solid #0003;border-top-color:var(--ink);border-radius:50%;animation:spn .7s linear infinite}@keyframes spn{to{transform:rotate(360deg)}}
+.lgbtn.ld .lt{opacity:0}.lgbtn.ld .sp{opacity:1}.lgbtn.okk{background:var(--g2);color:#fff}.lgbtn.okk .lt,.lgbtn.okk .sp{opacity:0}.lgbtn.okk .ck{opacity:1;font:700 26px Oswald;animation:pop .45s cubic-bezier(.34,1.56,.64,1)}
+@media(min-width:900px){.lg{max-width:900px;grid-template-columns:1.05fr 1fr;min-height:560px}.lgb{display:flex}.lgf{display:flex;flex-direction:column;justify-content:center;padding:48px 44px}.lgf .mob{display:none}}
 @media(min-width:900px){.bot,.ib.m{display:none}.dsk{display:flex;flex-direction:column;gap:3px;position:fixed;top:64px;bottom:0;left:0;width:240px;padding:16px 12px;border-right:1px solid var(--ln);background:var(--sf);overflow:auto}main{margin-left:240px;max-width:none;padding:26px 32px 40px}.toast{bottom:30px}}
 </style></head><body>
-<div id="login"><div class="card"><h2>Green <span style="color:var(--g)">Turf</span> Admin</h2><label>Email</label><input id="em" type="email"><label>Password</label><input id="pw" type="password"><br><br><button class="btn" style="width:100%" onclick="login()">Login</button></div></div>
+<div id="login"><div class="lg" id="lgc">
+<div class="lgb"><img src="https://i.postimg.cc/wvPVf1NX/24986-removebg-preview-(1).png" alt=""><h1>GREEN <span>TURF</span><br>ADMIN</h1><p data-t="আপনার টার্ফ ব্যবসার সম্পূর্ণ কন্ট্রোল|Full control of your turf business"></p><ul><li data-t="রিয়েল-টাইম বুকিং কন্ট্রোল|Real-time booking control" style="animation-delay:.2s"></li><li data-t="স্লট ও দাম ম্যানেজ|Manage slots and pricing" style="animation-delay:.3s"></li><li data-t="আয়-ব্যয় ও অ্যানালিটিক্স|Income, expense and analytics" style="animation-delay:.4s"></li></ul></div>
+<form class="lgf" onsubmit="login();return false"><div class="mob"><img src="https://i.postimg.cc/wvPVf1NX/24986-removebg-preview-(1).png" alt=""><b>GREEN <span>TURF</span></b></div>
+<h2 data-t="অ্যাডমিন লগইন|Admin sign in"></h2><p class="sub" data-t="চালিয়ে যেতে সাইন ইন করুন|Sign in to continue"></p>
+<label data-t="ইমেইল|Email"></label><div class="fi"><svg class="ic" viewBox="0 0 24 24"><path d="M3 6h18v12H3zM3 7l9 7 9-7"/></svg><input id="em" type="email" autocomplete="username" inputmode="email"></div>
+<label data-t="পাসওয়ার্ড|Password"></label><div class="fi"><svg class="ic" viewBox="0 0 24 24"><path d="M5 11h14v9H5zM8 11V8a4 4 0 018 0v3"/></svg><input id="pw" type="password" autocomplete="current-password"><button type="button" class="eye" onclick="eye()" aria-label="show"><svg class="ic" style="position:static;transform:none" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+<div id="lgerr" role="alert"></div><button class="lgbtn" id="lgb" type="submit"><span class="lt" data-t="সাইন ইন|Sign in"></span><span class="sp"></span><span class="ck">✓</span></button></form></div></div>
 <header><b>GREEN <span>TURF</span> ADMIN</b><button class="ib m" onclick="side(1)" aria-label="menu"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg></button></header>
 <div class="side" id="side"><i onclick="side(0)"></i><nav id="sn"></nav></div><div class="dsk" id="dn"></div>
 <main id="app"></main><div class="bot" id="bn"></div><div class="toast" id="ts"></div>
@@ -61,7 +83,7 @@ const ls=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}},ss=(k
 let TH=ls('ga_th','system'),LG=ls('ga_lg','system');
 const lang=()=>LG==='system'?((navigator.language||'en').toLowerCase().startsWith('bn')?'bn':'en'):LG;
 const T=(b,e)=>lang()==='bn'?b:e;
-const applyTheme=()=>{const d=TH==='system'?matchMedia('(prefers-color-scheme: dark)').matches:TH==='dark';document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.lang=lang()};
+const applyTheme=()=>{const d=TH==='system'?matchMedia('(prefers-color-scheme: dark)').matches:TH==='dark';document.documentElement.dataset.theme=d?'dark':'light';document.documentElement.lang=lang();lgLang()};
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',applyTheme);
 /* ===== demo data (user site er moto) ===== */
 const DEMO={
@@ -89,9 +111,18 @@ const amt=b=>+(b.tot??b.total??b.amount??b.amt??b.sum??(b.hrs||[]).reduce((s,h)=
 const ms=x=>x?.toMillis?x.toMillis():(+x||0),fd=t=>t?new Date(t).toLocaleString(lang()==='bn'?'bn-BD':'en',{dateStyle:'medium',timeStyle:'short'}):'—';
 const nm=b=>b.name||b.nm||USERS.find(u=>u.email&&u.email===b.u)?.name||b.u||b.email||(b.uid||'').slice(0,6);
 const isP=b=>b.status==='paid'||b.status==='free',isPend=b=>(b.status||'pending')==='pending';
-window.login=()=>signInWithEmailAndPassword(auth,$('#em').value,$('#pw').value).catch(()=>toast('Login failed'));
+let LGBUSY=0;
+const lgMsg=c=>({'auth/invalid-credential':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/wrong-password':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/user-not-found':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/invalid-email':T('সঠিক ইমেইল দিন','Enter a valid email'),'auth/too-many-requests':T('অনেকবার চেষ্টা করেছেন, একটু পরে আবার দিন','Too many attempts, try again later'),'auth/network-request-failed':T('ইন্টারনেট সংযোগ চেক করুন','Check your internet connection'),'auth/operation-not-allowed':T('Firebase এ Email/Password চালু নেই','Email/Password sign-in is not enabled in Firebase'),'not-admin':T('এই অ্যাকাউন্ট admin নয়','This account is not an admin')})[c]||T('লগইন ব্যর্থ হয়েছে','Sign in failed');
+function lgFail(m){LGBUSY=0;const b=$('#lgb'),c=$('#lgc');b.classList.remove('ld');b.disabled=false;$('#lgerr').textContent=m;c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+function lgLang(){document.querySelectorAll('[data-t]').forEach(e=>{const[a,b]=e.dataset.t.split('|');e.textContent=T(a,b)})}
+window.eye=()=>{const p=$('#pw');p.type=p.type==='password'?'text':'password'};
+window.login=()=>{if(LGBUSY)return;const e=$('#em').value.trim(),p=$('#pw').value;$('#lgerr').textContent='';if(!e||!p)return lgFail(T('ইমেইল ও পাসওয়ার্ড দিন','Enter email and password'));LGBUSY=1;const b=$('#lgb');b.classList.add('ld');b.disabled=true;signInWithEmailAndPassword(auth,e,p).catch(x=>lgFail(lgMsg(x.code)))};
 window.side=v=>$('#side').classList.toggle('on',!!v);
-onAuthStateChanged(auth,u=>{if(u&&!ADMINS.includes(u.email)){toast('Not admin');signOut(auth);return}$('#login').style.display=u?'none':'grid';un.forEach(f=>f());un=[];if(u)start()});
+onAuthStateChanged(auth,async u=>{const L=$('#login'),b=$('#lgb');
+if(u&&!ADMINS.includes(u.email)){await signOut(auth);lgFail(lgMsg('not-admin'));return}
+un.forEach(f=>f());un=[];
+if(u){if(LGBUSY){LGBUSY=0;b.classList.remove('ld');b.classList.add('okk');setTimeout(()=>{L.classList.add('out');setTimeout(()=>{L.style.display='none'},550)},750)}else L.style.display='none';start()}
+else{L.style.display='grid';void L.offsetWidth;L.classList.remove('out');b.classList.remove('okk','ld');b.disabled=false;$('#pw').value='';$('#lgerr').textContent=''}});
 function start(){const w=(r,f)=>un.push(onSnapshot(r,s=>{f(s);draw()},e=>toast('Permission: '+e.code)));
 w(doc(db,'config','site'),s=>{SITE=s.data()||{};if(!DRD)DR=null});w(doc(db,'config','payment'),s=>PAY=s.data()||{});
 w(collection(db,'plans'),s=>PLANS=s.docs.map(d=>({id:d.id,...d.data()})));w(collection(db,'events'),s=>EVS=s.docs.map(d=>({id:d.id,...d.data()})));
