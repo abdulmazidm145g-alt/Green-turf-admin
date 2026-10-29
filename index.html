@@ -59,6 +59,48 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;str
 .lgbtn.ld .lt{opacity:0}.lgbtn.ld .sp{opacity:1}.lgbtn.okk{background:var(--g2);color:#fff}.lgbtn.okk .lt,.lgbtn.okk .sp{opacity:0}.lgbtn.okk .ck{opacity:1;font:700 26px Oswald;animation:pop .45s cubic-bezier(.34,1.56,.64,1)}
 @media(min-width:900px){.lg{max-width:900px;grid-template-columns:1.05fr 1fr;min-height:560px}.lgb{display:flex}.lgf{display:flex;flex-direction:column;justify-content:center;padding:48px 44px}.lgf .mob{display:none}}
 @media(min-width:900px){.bot,.ib.m{display:none}.dsk{display:flex;flex-direction:column;gap:3px;position:fixed;top:64px;bottom:0;left:0;width:240px;padding:16px 12px;border-right:1px solid var(--ln);background:var(--sf);overflow:auto}main{margin-left:240px;max-width:none;padding:26px 32px 40px}.toast{bottom:30px}}
+
+/* ===== slot manager popup ===== */
+#sm{position:fixed;inset:0;z-index:110;display:flex;align-items:flex-end;justify-content:center;background:#000b;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+#sm.on{opacity:1;visibility:visible}
+.sm{width:100%;max-width:480px;max-height:92vh;overflow:auto;background:var(--sf);border:1px solid var(--ln);border-bottom:0;border-radius:26px 26px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom,0px));transform:translateY(60px);transition:transform .35s cubic-bezier(.2,.9,.25,1.05);scrollbar-width:none}
+.sm::-webkit-scrollbar{display:none}
+#sm.on .sm{transform:none}
+@media(min-width:700px){#sm{align-items:center}.sm{border-bottom:1px solid var(--ln);border-radius:26px;padding-top:18px}}
+.smg{width:42px;height:4px;border-radius:9px;background:var(--ln);margin:0 auto 12px}@media(min-width:700px){.smg{display:none}}
+.smh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.smh h3{margin:0;font-size:19px}.smh small{color:var(--mu);display:block;margin-top:2px}
+.smx{width:34px;height:34px;border-radius:50%;background:var(--sf2);border:1px solid var(--ln);font-size:16px;line-height:1;flex:none}
+.sml{display:flex;justify-content:space-between;align-items:center;color:var(--mu);font-size:12.5px;margin:14px 0 7px;font-weight:600;letter-spacing:.2px}
+.sml i{font-style:normal;color:var(--g)}
+.smhr{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.smhr button{position:relative;padding:7px 2px;border-radius:11px;border:1px solid var(--ln);background:var(--sf2);font-size:12.5px;transition:.18s}
+.smhr button.on{background:var(--g);color:var(--ink);border-color:var(--g);font-weight:700}
+.smhr button:before{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:transparent}
+.smhr button.b:before{background:var(--g2)}.smhr button.x:before{background:var(--rd)}
+.smhr button.on.b:before,.smhr button.on.x:before{background:var(--ink)}
+.smc{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.smc button{display:flex;align-items:center;gap:8px;padding:11px 12px;border-radius:14px;border:1.5px solid var(--ln);background:var(--sf2);font-weight:600;text-align:left;transition:.2s}
+.smc button span{width:10px;height:10px;border-radius:50%;background:var(--mu);flex:none}
+.smc button.f span{background:var(--g)}.smc button.y span{background:var(--am)}.smc button.c span{background:var(--rd)}.smc button.o span{background:#38bdf8}
+.smc button.on{border-color:var(--g);background:color-mix(in srgb,var(--g) 14%,var(--sf2))}
+.smc button.on.c{border-color:var(--rd);background:color-mix(in srgb,var(--rd) 14%,var(--sf2))}
+.smc button.on.y{border-color:var(--am);background:color-mix(in srgb,var(--am) 14%,var(--sf2))}
+.smc button.on.o{border-color:#38bdf8;background:color-mix(in srgb,#38bdf8 14%,var(--sf2))}
+.smp{display:flex;align-items:center;gap:8px}
+.smp .pi{position:relative;flex:1}.smp .pi b{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--mu);font-weight:700}
+.smp .pi input{padding-left:30px;font:700 18px Oswald,sans-serif;text-align:left}
+.smp button{width:44px;height:44px;border-radius:12px;border:1px solid var(--ln);background:var(--sf2);font-size:18px;font-weight:700;flex:none}
+.smp button:active{transform:scale(.92)}
+.smr{display:flex;gap:6px;flex-wrap:wrap}
+.smr button{padding:6px 12px;border-radius:99px;border:1px solid var(--ln);color:var(--mu);font-size:13px;transition:.2s}
+.smr button.on{background:var(--g);color:var(--ink);border-color:var(--g);font-weight:700}
+.smr button.rs.on{background:var(--am);border-color:var(--am)}
+.smb{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--sf2);border:1px solid var(--ln);border-radius:14px;padding:10px 12px;margin-top:8px;font-size:13.5px}
+.smb small{color:var(--mu);display:block}
+.smf{display:flex;gap:10px;margin-top:18px}.smf .btn{flex:1;padding:13px}
+.smn{color:var(--mu);font-size:12px;text-align:center;margin-top:10px}
+.smn:before{content:"● ";color:var(--g)}
 </style></head><body>
 <div id="login"><div class="lg" id="lgc">
 <div class="lgb"><img src="https://i.postimg.cc/wvPVf1NX/24986-removebg-preview-(1).png" alt=""><h1>GREEN <span>TURF</span><br>ADMIN</h1><p data-t="আপনার টার্ফ ব্যবসার সম্পূর্ণ কন্ট্রোল|Full control of your turf business"></p><ul><li data-t="রিয়েল-টাইম বুকিং কন্ট্রোল|Real-time booking control" style="animation-delay:.2s"></li><li data-t="স্লট ও দাম ম্যানেজ|Manage slots and pricing" style="animation-delay:.3s"></li><li data-t="আয়-ব্যয় ও অ্যানালিটিক্স|Income, expense and analytics" style="animation-delay:.4s"></li></ul></div>
@@ -73,7 +115,7 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;str
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,collection,collectionGroup,doc,setDoc,deleteDoc,onSnapshot,writeBatch,addDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{getFirestore,collection,collectionGroup,doc,setDoc,deleteDoc,onSnapshot,writeBatch,addDoc,updateDoc,deleteField}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const ADMINS=['greenturf121@gmail.com']; /* <-- নিজের admin email */
 const app=initializeApp({apiKey:"AIzaSyCca1PWXnrW8XV_o69fyDdxelr1GM_yLi4",authDomain:"green-turf-86d36.firebaseapp.com",projectId:"green-turf-86d36",storageBucket:"green-turf-86d36.firebasestorage.app",messagingSenderId:"57008159263",appId:"1:57008159263:web:1a770c8f5b1c14bd9f732a"});
 const auth=getAuth(app),db=getFirestore(app);
@@ -96,8 +138,8 @@ slides:['https://i.postimg.cc/zBMyT816/FB-IMG-1793015031191.jpg','https://i.post
 const I={dash:'M3 12l9-9 9 9M5 10v10h14V10',book:'M4 5h16v15H4zM4 10h16M9 3v4M15 3v4',slot:'M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',fin:'M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z',cup:'M7 4h10v5a5 5 0 01-10 0zM5 5H3v2a3 3 0 003 3M19 5h2v2a3 3 0 01-3 3M12 14v4M8 20h8',pay:'M3 6h18v12H3zM3 10h18',out:'M9 4H5v16h4M16 8l4 4-4 4M20 12H9',ana:'M4 20V10M10 20V4M16 20v-7M22 20H2',set:'M12 15a3 3 0 100-6 3 3 0 000 6zM19 12l2-1-2-4-2 .6-1.5-1L15 4h-4l-.5 2.6-1.5 1L7 7l-2 4 2 1v2l-2 1 2 4 2-.6 1.5 1L11 20h4l.5-2.6 1.5-1 2 .6 2-4-2-1z'};
 const ic=k=>`<svg class="ic" viewBox="0 0 24 24"><path d="${I[k]}"/></svg>`;
 const NAV=[['dash','ড্যাশবোর্ড','Dashboard','dash'],['book','বুকিং','Bookings','book'],['slot','স্লট','Slots','slot'],['ana','অ্যানালিটিক্স','Analytics','ana'],['edit','কনটেন্ট','Content','edit']];
-const MORE=[['fin','হিসাব','Finance','fin'],['plans','মেম্বারশিপ','Membership','star'],['events','টুর্নামেন্ট','Tournaments','cup'],['pay','পেমেন্ট নম্বর','Payment numbers','pay'],['set','সেটিংস','Settings','set'],['out','লগআউট','Logout','out']];
-let R='dash',SITE={},PLANS=[],EVS=[],BK=[],SLOTS=[],FIN=[],USERS=[],LOGINS=[],DR=null,DRD=0,DRM={plans:{},events:{}},PAY={},SP='football',DAY=dk(new Date()),FT='all',un=[];
+const MORE=[['fin','হিসাব','Finance','fin'],['plans','মেম্বারশিপ','Membership','star'],['live','লাইভ ম্যাচ','Live match','cup'],['events','টুর্নামেন্ট','Tournaments','cup'],['pay','পেমেন্ট নম্বর','Payment numbers','pay'],['set','সেটিংস','Settings','set'],['out','লগআউট','Logout','out']];
+let LVD=null,R='dash',SITE={},PLANS=[],EVS=[],BK=[],SLOTS=[],FIN=[],USERS=[],LOGINS=[],DR=null,DRD=0,DRM={plans:{},events:{}},PAY={},SP='football',DAY=dk(new Date()),FT='all',un=[];
 function dk(d){return d.toDateString()}
 const slotId=(s,ds,h)=>s+'_'+String(ds).replace(/\s+/g,'-')+'_'+h;
 const toast=m=>{const t=$('#ts');t.textContent=m;t.className='toast on';clearTimeout(t._);t._=setTimeout(()=>t.className='toast',2200)};
@@ -165,6 +207,11 @@ return`<h2>${T('বুকিং','Bookings')}</h2><div class="tabs">${t.map(x=>`
 slot(){const ds=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return d}),hs=[...Array(17)].map((_,i)=>i+6);if(!SPORTS().find(s=>s.k===SP))SP=SPORTS()[0]?.k;
 return`<h2>${T('স্লট কন্ট্রোল','Slot control')}</h2><div class="tabs">${SPORTS().map(s=>`<button class="${SP===s.k?'on':''}" onclick="SP='${s.k}';draw()">${sn(s.k)}</button>`).join('')}</div><div class="tabs">${ds.map(d=>{const k=dk(d);return`<button class="${DAY===k?'on':''}" onclick="DAY='${k}';draw()">${d.toLocaleDateString(lang()==='bn'?'bn-BD':'en',{weekday:'short',day:'numeric'})}</button>`}).join('')}</div>
 <p class="mu" style="font-size:13px;margin-bottom:10px">${T('ঘণ্টায় ক্লিক করুন। সবুজ = বুকড, লাল = বন্ধ/ব্যস্ত।','Tap an hour. Green = booked, red = busy/closed.')}</p><div class="hrs">${hs.map(h=>{const id=slotId(SP,DAY,h),s=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&b.status!=='rejected'),c=s?.status==='busy'||s?.status==='closed'?'x':(bk||s)?'b':'';return`<button class="sl ${c}" onclick="slotMenu(${h})"><b>${hh(h)}</b><small>৳${price(SP,h)}</small><small>${bk?esc(nm(bk)):s?.status==='busy'?T('ব্যস্ত','Busy'):s?.status==='closed'?T('বন্ধ','Closed'):T('খালি','Free')}</small></button>`}).join('')}</div>`},
+live(){const two=(id,lb,v,ve)=>`<label>${lb} — বাংলা</label><input id="${id}" value="${esc(v||'')}"><label>${lb} — English</label><input id="${id}e" value="${esc(ve||'')}">`,L=lvd(),lc=ms=>{if(!ms)return'';const d=new Date(+ms),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())},n=Date.now(),st=+L.st,du=(+L.du||90)*6e4,fi=(+L.fin||30)*6e4,state=!L.on||!st?T('ফলব্যাক (পরবর্তী টুর্নামেন্ট বক্স)','Fallback (next tournament box)'):n<st?T('কাউন্টডাউন চলছে','Countdown running'):n<st+du?T('🔴 লাইভ চলছে','🔴 Live now'):n<st+du+fi?T('ম্যাচ শেষ দেখাচ্ছে','Showing finished'):T('ফলব্যাক (পরবর্তী টুর্নামেন্ট বক্স)','Fallback (next tournament box)'),side=(k,ik,lb)=>`<div class="card"><h3>${lb}</h3><label>${T('ক্লাবের নাম','Club name')}</label><input value="${esc(L[k])}" oninput="lv('${k}',this.value)"><label>${T('ক্লাবের ছবি (লিংক)','Club image (link)')}</label><input value="${esc(L[ik])}" oninput="lv('${ik}',this.value);this.nextElementSibling.src=this.value"><img class="prev" src="${esc(L[ik])}"></div>`;
+return`<h2>${T('লাইভ ম্যাচ কন্ট্রোল','Live match control')}</h2><div class="card"><div class="row"><span>${T('বর্তমান অবস্থা','Current status')}</span><b class="in">${state}</b></div><label>${T('হোম পেজে দেখাবে?','Show on home page?')}</label><select onchange="lv('on',+this.value)"><option value="1" ${L.on?'selected':''}>${T('হ্যাঁ — চালু','Yes — On')}</option><option value="0" ${L.on?'':'selected'}>${T('না — বন্ধ','No — Off')}</option></select></div>
+${side('cA','iA',T('ক্লাব A (বাম পাশ)','Club A (left)'))}${side('cB','iB',T('ক্লাব B (ডান পাশ)','Club B (right)'))}
+<div class="card"><h3>${T('সময় ও লেখা','Timing & text')}</h3><label>${T('ম্যাচ শুরুর সময় (এই সময় পর্যন্ত কাউন্টডাউন)','Match start (countdown runs until then)')}</label><input type="datetime-local" value="${lc(L.st)}" onchange="lv('st',this.value?new Date(this.value).getTime():0)"><label>${T('কত মিনিট লাইভ থাকবে','Live duration (minutes)')}</label><input type="number" min="1" value="${esc(L.du)}" oninput="lv('du',+this.value)"><label>${T('শেষ হওয়ার পর "ম্যাচ শেষ" কত মিনিট দেখাবে','Show "finished" for (minutes)')}</label><input type="number" min="0" value="${esc(L.fin)}" oninput="lv('fin',+this.value)">${two('lvtt',T('ম্যাচের টাইটেল (ঐচ্ছিক)','Match title (optional)'),L.tt,L.tte,0).replace(/id="lvtt"/,'id="lvtt" oninput="lv(\'tt\',this.value)"').replace(/id="lvtte"/,'id="lvtte" oninput="lv(\'tte\',this.value)"')}${two('lvfb',T('ম্যাচ না থাকলে যে লেখা দেখাবে (ফাঁকা = Are you ready for the next tournament?)','Text when no match (empty = default)'),L.fb,L.fbe,0).replace(/id="lvfb"/,'id="lvfb" oninput="lv(\'fb\',this.value)"').replace(/id="lvfbe"/,'id="lvfbe" oninput="lv(\'fbe\',this.value)"')}</div>
+<div class="row" style="border:0"><button class="btn" style="flex:2;padding:14px" onclick="saveLive()">💾 ${T('সেভ ও লাইভ করুন','Save & go live')}</button><button class="btn o r" style="flex:1;padding:14px" onclick="clearLive()">${T('মুছে ফেলুন','Clear')}</button></div><p class="mu" style="font-size:13px">${T('সময় দিয়ে সেভ করলেই ইউজার সাইটে কাউন্টডাউন শুরু হবে। কাউন্টডাউন শেষ হলে অটো LIVE, তারপর ম্যাচ শেষ, তারপর ফলব্যাক বক্স।','Save with a time and the countdown starts on the user site. When it ends: LIVE → finished → fallback box, automatically.')}</p>`},
 edit(){const s=SITE,t=TX(),sl=s.slides||DEMO.slides,D=dr(),bl=(b,e)=>T(b,e);
 const two=(id,lb,v,ve,ta,rows)=>`<label>${lb} — বাংলা</label>${ta?`<textarea id="${id}" rows="${rows}">${esc(v)}</textarea>`:`<input id="${id}" value="${esc(v)}">`}<label>${lb} — English</label>${ta?`<textarea id="${id}e" rows="${rows}">${esc(ve)}</textarea>`:`<input id="${id}e" value="${esc(ve)}">`}`;
 return`<h2>${T('কনটেন্ট কাস্টমাইজ','Customise content')}</h2><div class="card"><h3>${T('স্লাইডশো ছবি (লিংক বসান)','Slideshow images (paste link)')}</h3>${[0,1].map(i=>`<label>${T('ছবি','Image')} ${i+1}</label><input id="sl${i}" value="${esc(sl[i]||'')}" oninput="document.getElementById('pv${i}').src=this.value"><img class="prev" id="pv${i}" src="${esc(sl[i]||'')}">`).join('')}</div>
@@ -172,6 +219,8 @@ return`<h2>${T('কনটেন্ট কাস্টমাইজ','Customise co
 <div class="card"><h3>${T('যোগাযোগ ও লোগো','Contact & logo')}</h3><label>Logo</label><input id="c_logo" value="${esc(s.logo||DEMO.logo)}"><label>${T('ফোন','Phone')}</label><input id="c_tel" value="${esc(s.tel||DEMO.tel)}"><label>WhatsApp (880...)</label><input id="c_wa" value="${esc(s.wa||DEMO.wa)}"><label>${T('ঠিকানা (ম্যাপ)','Address (map)')}</label><input id="c_map" value="${esc(s.map||DEMO.map)}"></div>
 ${lst('sports',T('খেলা ও বেস প্রাইস','Sports & base price'),D.sports)}${lst('addons',T('অ্যাড-অন (এক্সট্রা সার্ভিস)','Add-ons (extras)'),D.addons)}
 <div class="card"><h3>${T('কাস্টম ফিল্ড (ফুটারে দেখাবে)','Custom fields (shown in footer)')}</h3>${D.fields.map((f,i)=>`<div class="row"><input style="flex:1" placeholder="${T('নাম','Name')}" value="${esc(f.k)}" onchange="fld(${i},'k',this.value)"><input style="flex:2" placeholder="${T('মান','Value')}" value="${esc(f.v)}" onchange="fld(${i},'v',this.value)"><button class="btn s r" onclick="fld(${i})">✕</button></div>`).join('')}<br><button class="btn o s" onclick="fld(-1)">+ ${T('নতুন ফিল্ড','New field')}</button></div>
+<div class="card"><h3>${T('সেকশন ও ফুটারের লেখা (ফাঁকা = ডিফল্ট)','Section & footer texts (empty = default)')}</h3>${[['secSp',T('Choose your sport — শিরোনাম','Choose your sport — title')],['secSpS',T('Choose your sport — সাব টেক্সট','Choose your sport — sub text')],['ftD',T('ফুটার বিবরণ','Footer description')],['contact',T('যোগাযোগ শিরোনাম','Contact heading')],['locTxt',T('ঠিকানা লেখা','Address text')],['hours',T('খোলার সময়','Opening hours')],['cpr',T('কপিরাইট লেখা','Copyright line')]].map(([k,l])=>two('t_'+k,l,t[k]||'',t[k+'e']||'',0)).join('')}</div>
+<div class="card"><h3>${T('ফুটার সোশ্যাল আইকন ও লিংক','Footer social icons & links')}</h3><p class="mu" style="font-size:13px;margin-bottom:8px">${T('WhatsApp/ফোন/ম্যাপে লিংক ফাঁকা রাখলে উপরের নম্বর/ঠিকানা থেকে অটো হবে।','Leave WhatsApp/Phone/Map link empty to use the details above.')}</p>${D.soc.map((s,i)=>`<div class="row"><select style="flex:1" onchange="so(${i},'t',this.value)">${[['wa','WhatsApp'],['call',T('ফোন কল','Phone call')],['dir',T('দিকনির্দেশ (ম্যাপ)','Directions (map)')],['facebook','Facebook'],['instagram','Instagram'],['youtube','YouTube'],['tiktok','TikTok'],['x','X (Twitter)'],['telegram','Telegram'],['linkedin','LinkedIn'],['email','Email'],['website','Website']].map(([k,n])=>`<option value="${k}" ${s.t===k?'selected':''}>${n}</option>`).join('')}</select><input style="flex:2" placeholder="https://..." value="${esc(s.u||'')}" onchange="so(${i},'u',this.value)"><button class="btn s r" onclick="so(${i})">✕</button></div>`).join('')}<br><button class="btn o s" onclick="so(-1)">+ ${T('নতুন আইকন','New icon')}</button></div>
 <button class="btn" style="width:100%;padding:14px" onclick="saveContent()">💾 ${T('সব সেভ করুন','Save all changes')}</button>`},
 fin(){const L=LEDGER().filter(x=>FT==='all'||FT===x.type);
 return`<h2>${T('আয়-ব্যয়ের হিস্ট্রি','Income & expense history')}</h2><div class="tabs">${[['all','সব','All'],['in','আয়','Income'],['out','খরচ','Expense']].map(([k,b,e])=>`<button class="${FT===k?'on':''}" onclick="FT='${k}';draw()">${T(b,e)}</button>`).join('')}</div><div class="card">${L.map(x=>`<div class="row"><div>${esc(x.note||'')}<br><small>${fd(x.ts)}${x.sp?' · '+sn(x.sp)+' · '+esc(x.ds||'')+' · '+(x.hrs||[]).map(hh).join(','):''}</small></div><div><b class="${x.type==='in'?'in':'out'}">${x.type==='in'?'+':'−'}৳${x.amt}</b> ${String(x.id).startsWith('b')?'':`<button class="btn s r" onclick="del('finance','${x.id}')">✕</button>`}</div></div>`).join('')||`<p class="mu">${T('কিছু নেই','Empty')}</p>`}</div>`},
@@ -180,10 +229,17 @@ events(){return mgr('events',T('টুর্নামেন্ট','Tournaments'
 pay(){return`<h2>${T('পেমেন্ট নম্বর','Payment numbers')}</h2><div class="card">${['bkash','nagad','upay','rocket'].map(k=>`<label>${k}</label><input id="p_${k}" value="${esc(PAY[k]||'01892002275')}">`).join('')}<br><br><button class="btn" onclick="savePay()">${T('সেভ','Save')}</button></div>`},
 set(){const sg=(v,cur,fn,l)=>`<div class="seg">${l.map(([k,n])=>`<button class="${cur===k?'on':''}" onclick="${fn}('${k}')">${n}</button>`).join('')}</div>`;
 return`<h2>${T('সেটিংস','Settings')}</h2><div class="card"><h3>${T('থিম','Theme')}</h3>${sg(0,TH,'setTh',[['system',T('ডিভাইস অনুযায়ী','Device')],['dark',T('ডার্ক','Dark')],['light',T('লাইট','Light')]])}</div><div class="card"><h3>${T('ভাষা','Language')}</h3>${sg(0,LG,'setLg',[['system',T('ডিভাইস অনুযায়ী','Device')],['bn','বাংলা'],['en','English']])}</div>`}};
-const dr=()=>DR||(DR={sports:JSON.parse(JSON.stringify(SPORTS())),addons:JSON.parse(JSON.stringify(ADDONS())),fields:JSON.parse(JSON.stringify(SITE.fields||[]))});
-const lst=(key,title,arr)=>`<div class="card"><h3>${title}</h3>${arr.map((x,i)=>`<div class="row"><input style="flex:2" value="${esc(x.n)}" placeholder="বাংলা" onchange="li('${key}',${i},'n',this.value)"><input style="flex:2" value="${esc(x.e||'')}" placeholder="English" onchange="li('${key}',${i},'e',this.value)"><input style="flex:1" type="number" value="${x.p}" onchange="li('${key}',${i},'p',+this.value)"><button class="btn s r" onclick="li('${key}',${i})">✕</button></div>`).join('')}<br><button class="btn o s" onclick="li('${key}',-1)">+ ${T('নতুন','New')}</button></div>`;
+const DEFSOC=[{t:'wa',u:''},{t:'call',u:''},{t:'dir',u:''}];
+const dr=()=>DR||(DR={soc:JSON.parse(JSON.stringify(SITE.soc&&SITE.soc.length?SITE.soc:DEFSOC)),sports:JSON.parse(JSON.stringify(SPORTS())),addons:JSON.parse(JSON.stringify(ADDONS())),fields:JSON.parse(JSON.stringify(SITE.fields||[]))});
+const lst=(key,title,arr)=>`<div class="card"><h3>${title}</h3>${arr.map((x,i)=>`<div class="row"><input style="flex:2" value="${esc(x.n)}" placeholder="বাংলা" onchange="li('${key}',${i},'n',this.value)"><input style="flex:2" value="${esc(x.e||'')}" placeholder="English" onchange="li('${key}',${i},'e',this.value)"><input style="flex:1" type="number" value="${x.p}" onchange="li('${key}',${i},'p',+this.value)"><button class="btn s r" onclick="li('${key}',${i})">✕</button></div>${key==='sports'?`<div class="row" style="padding-top:0"><input style="flex:1 1 100%" placeholder="${T('পোস্ট ইমেজ লিংক','Post image link')}" value="${esc(x.img||'')}" onchange="li('${key}',${i},'img',this.value)"><input style="flex:1" placeholder="${T('বিবরণ (বাংলা)','Description (Bangla)')}" value="${esc(x.ds||'')}" onchange="li('${key}',${i},'ds',this.value)"><input style="flex:1" placeholder="Description (English)" value="${esc(x.dse||'')}" onchange="li('${key}',${i},'dse',this.value)"><input style="flex:1" placeholder="${T('দামের নিচের লেখা (বাংলা)','Price note (Bangla)')}" value="${esc(x.nt||'')}" onchange="li('${key}',${i},'nt',this.value)"><input style="flex:1" placeholder="Price note (English)" value="${esc(x.nte||'')}" onchange="li('${key}',${i},'nte',this.value)"></div><hr style="border:0;border-top:1px dashed var(--ln);margin:4px 0 10px">`:''}`).join('')}<br><button class="btn o s" onclick="li('${key}',-1)">+ ${T('নতুন','New')}</button></div>`;
 function mgr(col,title,list,f){const D=DRM[col],all=[...list.map(x=>D[x.id]||x),...Object.values(D).filter(x=>x.id.startsWith('new'))];const seed=!all.length?`<div class="card"><p class="mu">${T('এখনো কিছু নেই। ইউজার সাইটের ডেমো ডেটা লোড করে এডিট করুন।','Nothing yet. Load the user-site demo data to edit it.')}</p><br><button class="btn" onclick="seedDemo('${col}')">${T('ডেমো ডেটা লোড করুন','Load demo data')}</button></div>`:'';
 return`<h2>${title}</h2>${seed}${all.map(x=>`<div class="card">${f.map(([k,n,t])=>`<label>${n}</label><input type="${t||'text'}" value="${esc(Array.isArray(x[k])?x[k].join(', '):x[k])}" onchange="upd('${col}','${x.id}','${k}',this.value,'${t||''}')">`).join('')}<br><br><button class="btn s r" onclick="del('${col}','${x.id}')">${T('ডিলিট','Delete')}</button></div>`).join('')}<button class="btn o" onclick="addDoc2('${col}')">+ ${T('নতুন যোগ করুন','Add new')}</button> <button class="btn" onclick="saveM('${col}')">💾 ${T('সেভ করুন','Save')}</button>`}
+
+const lvd=()=>LVD||(LVD={on:1,cA:'',iA:'',cB:'',iB:'',tt:'',tte:'',st:0,du:90,fin:30,fb:'',fbe:'',...(SITE.live||{})});
+window.lv=(k,v)=>{lvd()[k]=v;if(k==='on'||k==='st')draw()};
+window.saveLive=async()=>{const L=lvd();if(!+L.st)return toast(T('শুরুর সময় দিন','Set the start time'));if(!L.cA&&!L.cB)return toast(T('ক্লাবের নাম দিন','Enter club names'));if(await ok(setDoc(doc(db,'config','site'),{live:{...L,on:L.on?1:0,st:+L.st,du:+L.du||90,fin:+L.fin||0}},{merge:true})))LVD=null};
+window.clearLive=async()=>{if(!confirm(T('লাইভ ম্যাচ মুছবেন?','Clear the live match?')))return;if(await ok(setDoc(doc(db,'config','site'),{live:deleteField()},{merge:true})))LVD=null};
+window.so=(i,k,v)=>{const a=dr().soc;DRD=1;if(i===-1)a.push({t:'facebook',u:''});else if(k)a[i][k]=v;else a.splice(i,1);if(i===-1||!k)draw()};
 window.setTh=v=>{TH=v;ss('ga_th',v);draw()};window.setLg=v=>{LG=v;ss('ga_lg',v);draw()};
 window.seedDemo=c=>{const w=writeBatch(db);DEMO[c].forEach(x=>w.set(doc(collection(db,c)),x));ok(w.commit())};
 window.upd=(c,id,k,v,t)=>{const cur=DRM[c][id]||{...(c==='plans'?PLANS:EVS).find(x=>x.id===id)};cur[k]=(k==='f'||k==='fe')?v.split(',').map(s=>s.trim()).filter(Boolean):t==='number'?+v:v;DRM[c][id]=cur};
@@ -193,13 +249,56 @@ window.del=(c,id)=>{if(!confirm(T('ডিলিট করবেন?','Delete?'))
 window.li=(key,i,k,v)=>{const a=dr()[key];DRD=1;if(i===-1)a.push({k:'k'+Date.now(),n:'নতুন',e:'New',p:0});else if(k)a[i][k]=v;else{if(!confirm(T('ডিলিট করবেন?','Delete?')))return;a.splice(i,1)}if(i===-1||!k)draw()};
 window.addFin=()=>{const a=+$('#fa').value;if(!a)return toast(T('টাকা দিন','Enter amount'));ok(addDoc(collection(db,'finance'),{type:$('#ft').value,amt:a,note:$('#fn').value,ts:Date.now()}));$('#fa').value=$('#fn').value=''};
 window.setB=(uid,id,st)=>{const b=BK.find(x=>x.id===id),w=writeBatch(db);w.update(doc(db,'users',uid,'bookings',id),{status:st});(b.hrs||[]).forEach(h=>{const r=doc(db,'slots',slotId(b.sp,b.ds,h));st==='rejected'?w.delete(r):w.set(r,{uid,sp:b.sp,ds:b.ds,h,ts:new Date(b.ds).getTime(),bid:id,status:st},{merge:true})});ok(w.commit())};
-window.slotMenu=h=>{const id=slotId(SP,DAY,h),c=prompt(`${hh(h)} · ${DAY}\n1 = ${T('ব্যস্ত','Busy')}\n2 = ${T('বন্ধ','Closed')}\n3 = ${T('ফ্রি করুন','Make free')}\n4 = ${T('দাম বদলান','Change price')}\n5 = ${T('অফলাইন বুকিং দিন','Add offline booking')}`),base={uid:'admin',sp:SP,ds:DAY,h,ts:new Date(DAY).getTime()};
-if(c==='1'||c==='2')ok(setDoc(doc(db,'slots',id),{...base,status:c==='1'?'busy':'closed'}));
-else if(c==='3'){if(BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&b.status!=='rejected'))toast(T('আগে বুকিং Reject করুন','Reject the booking first'));else ok(deleteDoc(doc(db,'slots',id)))}
-else if(c==='4'){const v=prompt(T('নতুন দাম (৳):','New price (৳):'),price(SP,h));if(v)ok(setDoc(doc(db,'config','site'),{prices:{[SP]:{[h]:+v}}},{merge:true}))}
-else if(c==='5'){const n=prompt(T('কাস্টমারের নাম/ফোন:','Customer name/phone:'));if(n){const bid='A'+Date.now(),w=writeBatch(db);w.set(doc(db,'slots',id),{...base,bid,status:'paid'});w.set(doc(db,'users','admin','bookings',bid),{id:bid,u:'offline',sp:SP,ds:DAY,hrs:[h],name:n,tot:price(SP,h),status:'paid',c:Date.now()});ok(w.commit())}}};
+/* ===== advanced slot manager (popup) ===== */
+const HRS=[...Array(17)].map((_,i)=>i+6);let SM=null;
+const smSt=h=>{const id=slotId(SM.sp,SM.day,h),sl=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SM.sp&&b.ds===SM.day&&(b.hrs||[]).includes(h)&&b.status!=='rejected');return{sl,bk,st:bk||(sl&&sl.status!=='busy'&&sl.status!=='closed')?'booked':sl?sl.status:'free'}};
+const smEl=()=>{let e=$('#sm');if(!e){e=document.createElement('div');e.id='sm';e.onclick=ev=>{if(ev.target===e)smClose()};document.body.appendChild(e)}return e};
+function smRender(){if(!SM)return;const hs=[...SM.sel].sort((a,b)=>a-b),bks=[];
+hs.forEach(h=>{const x=smSt(h);if(x.bk&&!bks.find(b=>b.id===x.bk.id))bks.push(x.bk)});
+const M=[['free','f',T('ফ্রি','Free')],['busy','y',T('ব্যস্ত','Busy')],['closed','c',T('বন্ধ','Closed')],['offline','o',T('অফলাইন বুকিং','Offline booking')]];
+const SC=[['sel',T('বাছাই করা','Selected')],['day',T('দিন (৬–৫টা)','Day (6–5 PM)')],['eve',T('সন্ধ্যা (৫টার পর)','Evening (5 PM+)')],['all',T('সব ঘণ্টা','All hours')]];
+smEl().innerHTML=`<div class="sm"><div class="smg"></div>
+<div class="smh"><div><h3>${T('স্লট ম্যানেজ','Manage slots')}</h3><small>${esc(sn(SM.sp))} · ${esc(SM.day)}</small></div><button class="smx" onclick="smClose()" aria-label="close">✕</button></div>
+<div class="sml">${T('ঘণ্টা বাছুন (একাধিক হতে পারে)','Pick hours (multiple allowed)')}<i>${hs.length} ${T('টি','selected')}</i></div>
+<div class="smhr">${HRS.map(h=>{const x=smSt(h);return`<button class="${SM.sel.has(h)?'on':''} ${x.st==='booked'?'b':x.st==='busy'||x.st==='closed'?'x':''}" onclick="smH(${h})">${hh(h)}</button>`}).join('')}</div>
+${bks.map(b=>`<div class="smb"><div><b>${esc(nm(b))}</b><small>${esc(b.status||'pending')} · ৳${amt(b)}</small></div><button class="btn r s" onclick="smRej('${esc(b.uid)}','${esc(b.id)}')">${T('বুকিং বাতিল','Reject')}</button></div>`).join('')}
+<div class="sml">${T('স্ট্যাটাস','Status')}<i></i></div>
+<div class="smc">${M.map(m=>`<button class="${m[1]} ${SM.mode===m[0]?'on':''}" onclick="smMode('${m[0]}')"><span></span>${m[2]}</button>`).join('')}</div>
+${SM.mode==='offline'?`<label>${T('কাস্টমারের নাম/ফোন','Customer name/phone')}</label><input id="smn" value="${esc(SM.name)}" oninput="SM.name=this.value" placeholder="01XXXXXXXXX">`:''}
+<div class="sml">${T('দাম (প্রতি ঘণ্টা)','Price (per hour)')}<i>${T('এখন','Now')}: ৳${price(SM.sp,hs[0]??6)}</i></div>
+<div class="smp"><button onclick="smStep(-50)">−</button><div class="pi"><b>৳</b><input id="smp" type="number" inputmode="numeric" min="0" value="${esc(SM.price)}" oninput="SM.price=this.value;SM.dirty=1;SM.reset=0"></div><button onclick="smStep(50)">+</button></div>
+<div class="sml">${T('কোথায় প্রযোজ্য','Apply price to')}<i></i></div>
+<div class="smr">${SC.map(c=>`<button class="${SM.scope===c[0]?'on':''}" onclick="smScope('${c[0]}')">${c[1]}</button>`).join('')}<button class="rs ${SM.reset?'on':''}" onclick="smReset()">↺ ${T('ডিফল্ট দাম','Default price')}</button></div>
+<div class="smf"><button class="btn o" onclick="smClose()">${T('বাতিল','Cancel')}</button><button class="btn" onclick="smApply()">✓ ${T('কনফার্ম','Confirm')}</button></div>
+<div class="smn">${T('কনফার্ম করলেই ইউজার সাইটে সাথে সাথে আপডেট হবে','Changes go live on the user site instantly')}</div></div>`}
+window.slotMenu=h=>{SM={sp:SP,day:DAY,sel:new Set([h]),mode:null,price:'',dirty:0,reset:0,scope:'sel',name:''};const x=smSt(h);SM.mode=x.st==='booked'?null:x.st;SM.price=price(SP,h);smRender();requestAnimationFrame(()=>smEl().classList.add('on'))};
+window.smClose=()=>{const e=$('#sm');if(e)e.classList.remove('on');SM=null};
+window.smH=h=>{if(!SM)return;SM.sel.has(h)?SM.sel.delete(h):SM.sel.add(h);if(SM.sel.size===1&&!SM.dirty){const f=[...SM.sel][0];SM.price=price(SM.sp,f)}smRender()};
+window.smMode=m=>{SM.mode=SM.mode===m?null:m;smRender()};
+window.smStep=d=>{SM.price=String(Math.max(0,(+SM.price||0)+d));SM.dirty=1;SM.reset=0;smRender()};
+window.smScope=c=>{SM.scope=c;smRender()};
+window.smReset=()=>{SM.reset=SM.reset?0:1;if(SM.reset)SM.dirty=0;smRender()};
+window.smRej=(uid,id)=>{if(!confirm(T('এই বুকিং বাতিল করবেন?','Reject this booking?')))return;setB(uid,id,'rejected');smClose()};
+window.smApply=async()=>{if(!SM)return;const{sp,day}=SM,hs=[...SM.sel].sort((a,b)=>a-b);
+if(!hs.length)return toast(T('অন্তত একটি ঘণ্টা বাছুন','Pick at least one hour'));
+const w=writeBatch(db),ts=new Date(day).getTime();let n=0;
+/* price */
+const sc={sel:hs,day:HRS.filter(h=>h<17),eve:HRS.filter(h=>h>=17),all:HRS}[SM.scope],pv=SM.price===''?NaN:+SM.price,pn={};
+if(SM.reset)sc.forEach(h=>pn[h]=deleteField());else if(SM.dirty&&pv>=0)sc.forEach(h=>pn[h]=pv);
+if(Object.keys(pn).length){w.set(doc(db,'config','site'),{prices:{[sp]:pn}},{merge:true});n++}
+/* status */
+const free=hs.filter(h=>!smSt(h).bk);
+if(SM.mode==='free')free.forEach(h=>{if(smSt(h).sl){w.delete(doc(db,'slots',slotId(sp,day,h)));n++}});
+else if(SM.mode==='busy'||SM.mode==='closed')free.forEach(h=>{w.set(doc(db,'slots',slotId(sp,day,h)),{uid:'admin',sp,ds:day,h,ts,status:SM.mode});n++});
+else if(SM.mode==='offline'){const nmv=SM.name.trim();if(!nmv)return toast(T('কাস্টমারের নাম/ফোন দিন','Enter customer name/phone'));
+if(!free.length)return toast(T('এই ঘণ্টাগুলো আগেই বুকড','These hours are already booked'));
+const bid='A'+Date.now(),tot=free.reduce((t,h)=>t+(SM.dirty&&pv>=0&&!SM.reset?pv:price(sp,h)),0);
+free.forEach(h=>w.set(doc(db,'slots',slotId(sp,day,h)),{uid:'admin',sp,ds:day,h,ts,bid,status:'paid'}));
+w.set(doc(db,'users','admin','bookings',bid),{id:bid,u:'offline',sp,ds:day,hrs:free,name:nmv,tot,status:'paid',c:Date.now()});n++}
+if(!n)return toast(T('কোনো পরিবর্তন নেই','Nothing to change'));
+if(await ok(w.commit()))smClose()};
 const ln=id=>$(id).value.split('\n').map(s=>s.trim()).filter(Boolean);
-window.saveContent=async()=>{const D=dr(),g=i=>$('#'+i).value;const r=await ok(setDoc(doc(db,'config','site'),{slides:[g('sl0').trim(),g('sl1').trim()],texts:{h1:g('t_h1'),h1e:g('t_h1e'),hp:g('t_hp'),hpe:g('t_hpe'),feat:ln('#t_feat'),feate:ln('#t_feate'),fac:ln('#t_fac'),face:ln('#t_face')},logo:g('c_logo').trim(),tel:g('c_tel').trim(),wa:g('c_wa').trim(),map:g('c_map').trim(),sports:D.sports,addons:D.addons,fields:D.fields.filter(f=>f.k)},{merge:true}));if(r){DRD=0;DR=null}};
+window.saveContent=async()=>{const D=dr(),g=i=>$('#'+i).value;const r=await ok(setDoc(doc(db,'config','site'),{slides:[g('sl0').trim(),g('sl1').trim()],texts:{...Object.fromEntries(['secSp','secSpS','ftD','contact','locTxt','hours','cpr'].flatMap(k=>[[k,g('t_'+k)],[k+'e',g('t_'+k+'e')]])),h1:g('t_h1'),h1e:g('t_h1e'),hp:g('t_hp'),hpe:g('t_hpe'),feat:ln('#t_feat'),feate:ln('#t_feate'),fac:ln('#t_fac'),face:ln('#t_face')},logo:g('c_logo').trim(),tel:g('c_tel').trim(),wa:g('c_wa').trim(),map:g('c_map').trim(),sports:D.sports,addons:D.addons,fields:D.fields.filter(f=>f.k),soc:D.soc.filter(s=>s.t)},{merge:true}));if(r){DRD=0;DR=null}};
 window.fld=(i,k,v)=>{const f=dr().fields;DRD=1;if(i===-1)f.push({k:'',v:''});else if(k)f[i][k]=v;else f.splice(i,1);if(i===-1||!k)draw()};
 window.savePay=()=>ok(setDoc(doc(db,'config','payment'),Object.fromEntries(['bkash','nagad','upay','rocket'].map(k=>[k,$('#p_'+k).value.trim()])),{merge:true}));
 window.draw=draw;window.$=$;Object.defineProperty(window,'FT',{get:()=>FT,set:v=>FT=v});Object.defineProperty(window,'SP',{get:()=>SP,set:v=>SP=v});Object.defineProperty(window,'DAY',{get:()=>DAY,set:v=>DAY=v});
