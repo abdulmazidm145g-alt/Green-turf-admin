@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="bn" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Green Turf Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07110b;--sf:#0e1c13;--sf2:#14271a;--ln:#1f3526;--tx:#eef6ef;--mu:#8fa596;--g:#b6f23a;--g2:#2f9e4f;--ink:#06160a;--rd:#ef4444;--am:#f59e0b}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:400 15px/1.5 'Hind Siliguri',system-ui,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+input,select,textarea{width:100%;background:var(--sf2);border:1px solid var(--ln);border-radius:10px;padding:10px 12px;outline:0}input:focus,select:focus,textarea:focus{border-color:var(--g)}
+label{display:block;color:var(--mu);font-size:12.5px;margin:10px 0 4px}
+.btn{display:inline-flex;gap:6px;align-items:center;justify-content:center;background:var(--g);color:var(--ink);font-weight:700;padding:10px 18px;border-radius:10px;transition:transform .15s,filter .2s}.btn:hover{filter:brightness(1.08)}.btn:active{transform:scale(.96)}
+.btn.o{background:none;color:var(--tx);border:1px solid var(--ln)}.btn.r{background:var(--rd);color:#fff}.btn.s{padding:6px 12px;font-size:13px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:16px;margin-bottom:14px;animation:up .4s both}
+@keyframes up{from{opacity:0;transform:translateY(12px)}}
+h2{font-size:20px;margin-bottom:12px}h3{font-size:16px;margin-bottom:8px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:14px;cursor:pointer;transition:transform .2s,border-color .2s}.stat:hover{transform:translateY(-3px);border-color:var(--g)}
+.stat small{color:var(--mu)}.stat b{display:block;font:700 24px Oswald}
+.in{color:var(--g)}.out{color:var(--rd)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--ln)}.row:last-child{border:0}
+.tag{font-size:11px;padding:2px 9px;border-radius:99px;border:1px solid var(--ln)}.tag.pending{color:var(--am);border-color:var(--am)}.tag.approved{color:var(--g);border-color:var(--g)}.tag.rejected,.tag.busy,.tag.closed{color:var(--rd);border-color:var(--rd)}
+.hrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.sl{border:1px solid var(--ln);background:var(--sf2);border-radius:12px;padding:8px;text-align:center;transition:transform .15s}.sl:active{transform:scale(.95)}
+.sl small{display:block;color:var(--mu)}.sl.b{border-color:var(--g);background:color-mix(in srgb,var(--g) 14%,var(--sf2))}.sl.x{border-color:var(--rd);background:color-mix(in srgb,var(--rd) 14%,var(--sf2))}
+.tabs{display:flex;gap:6px;overflow:auto;margin-bottom:12px}.tabs button{padding:7px 14px;border-radius:99px;border:1px solid var(--ln);color:var(--mu);white-space:nowrap}.tabs button.on{background:var(--g);color:var(--ink);border-color:var(--g)}
+header{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;height:60px;padding:0 14px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+header b{font:700 19px Oswald;letter-spacing:.04em;flex:1}header b span{color:var(--g)}
+.ib{width:40px;height:40px;border-radius:50%;border:1px solid var(--ln);background:var(--sf);display:grid;place-items:center}
+main{padding:16px 14px 120px;max-width:1000px;margin:auto}
+svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.bot{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;justify-content:space-around;background:color-mix(in srgb,var(--sf) 80%,transparent);backdrop-filter:blur(18px) saturate(180%);border:1px solid var(--ln);border-radius:26px;padding:8px 4px;box-shadow:0 10px 40px rgba(0,0,0,.45)}
+.nv{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:11px;color:var(--mu);padding:5px 10px;border-radius:16px;transition:transform .2s,color .3s}.nv.on{color:var(--g);font-weight:600;transform:translateY(-4px)}.nv:active{transform:scale(.9)}
+.side{position:fixed;inset:0;z-index:60;visibility:hidden}.side.on{visibility:visible}.side i{position:absolute;inset:0;background:#0009;opacity:0;transition:.3s}.side.on i{opacity:1}
+.side nav{position:absolute;top:0;bottom:0;right:0;width:78%;max-width:300px;background:var(--sf);border-left:1px solid var(--ln);padding:20px 12px;transform:translateX(100%);transition:transform .35s cubic-bezier(.3,.9,.3,1)}.side.on nav{transform:none}
+.side .nv,.dsk .nv{flex-direction:row;gap:12px;font-size:15px;padding:11px 12px;border-radius:12px;width:100%}.side .nv.on,.dsk .nv.on{background:var(--sf2);transform:none}
+.dsk{display:none}
+.toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,30px);background:var(--g);color:var(--ink);padding:10px 18px;border-radius:12px;font-weight:600;opacity:0;transition:.3s;z-index:90}.toast.on{opacity:1;transform:translate(-50%,0)}
+.prev{width:100%;height:130px;object-fit:cover;border-radius:12px;border:1px solid var(--ln);margin-top:6px;background:var(--sf2)}
+#login{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;padding:20px}#login .card{width:100%;max-width:360px}
+@media(min-width:900px){.bot,.ib.m{display:none}.dsk{display:flex;flex-direction:column;gap:4px;position:fixed;top:60px;bottom:0;left:0;width:230px;padding:16px 12px;border-right:1px solid var(--ln);background:var(--sf)}main{margin-left:230px;max-width:none;padding:24px 30px;padding-bottom:40px}.toast{bottom:30px}}
+</style></head><body>
+<div id="login"><div class="card"><h2>Green <span style="color:var(--g)">Turf</span> Admin</h2><label>Email</label><input id="em" type="email"><label>Password</label><input id="pw" type="password"><br><br><button class="btn" style="width:100%" onclick="login()">Login</button></div></div>
+<header><b>GREEN <span>TURF</span> ADMIN</b><button class="ib m" onclick="side(1)" aria-label="menu"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="19" r="1.4"/></svg></button></header>
+<div class="side" id="side"><i onclick="side(0)"></i><nav id="sn"></nav></div><div class="dsk" id="dn"></div>
+<main id="app"></main><div class="bot" id="bn"></div><div class="toast" id="ts"></div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,collection,collectionGroup,doc,setDoc,getDoc,deleteDoc,onSnapshot,writeBatch,addDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+/* ===== এখানে নিজের admin email দিন ===== */
+const ADMINS=['greenturf121@gmail.com'];
+const app=initializeApp({apiKey:"AIzaSyCca1PWXnrW8XV_o69fyDdxelr1GM_yLi4",authDomain:"green-turf-86d36.firebaseapp.com",projectId:"green-turf-86d36",storageBucket:"green-turf-86d36.firebasestorage.app",messagingSenderId:"57008159263",appId:"1:57008159263:web:1a770c8f5b1c14bd9f732a"});
+const auth=getAuth(app),db=getFirestore(app);
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
+const SPN={football:'ফুটবল',cricket:'ক্রিকেট',badminton:'ব্যাডমিন্টন'},DP={football:2000,cricket:1800,badminton:600};
+const I={dash:'M3 12l9-9 9 9M5 10v10h14V10',book:'M4 5h16v15H4zM4 10h16M9 3v4M15 3v4',slot:'M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2',edit:'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',fin:'M12 2v20M17 6H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6',star:'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z',cup:'M7 4h10v5a5 5 0 01-10 0zM5 5H3v2a3 3 0 003 3M19 5h2v2a3 3 0 01-3 3M12 14v4M8 20h8',pay:'M3 6h18v12H3zM3 10h18',out:'M9 4H5v16h4M16 8l4 4-4 4M20 12H9'};
+const ic=k=>`<svg class="ic" viewBox="0 0 24 24"><path d="${I[k]}"/></svg>`;
+const NAV=[['dash','ড্যাশবোর্ড','dash'],['book','বুকিং','book'],['slot','স্লট','slot'],['edit','কনটেন্ট','edit'],['fin','হিসাব','fin']],MORE=[['plans','মেম্বারশিপ','star'],['events','টুর্নামেন্ট','cup'],['pay','পেমেন্ট নম্বর','pay'],['out','লগআউট','out']];
+let R='dash',SITE={},PLANS=[],EVS=[],BK=[],SLOTS=[],FIN=[],PAY={},SP='football',DAY=dk(new Date()),FT='all',un=[];
+function dk(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const slotId=(s,ds,h)=>s+'_'+String(ds).replace(/\s+/g,'-')+'_'+h;
+const toast=m=>{const t=$('#ts');t.textContent=m;t.className='toast on';clearTimeout(t._);t._=setTimeout(()=>t.className='toast',2200)};
+const ok=p=>p.then(()=>toast('সেভ হয়েছে ✓')).catch(e=>toast('Error: '+e.code));
+const price=(s,h)=>{const o=SITE.prices?.[s]?.[h];return o!=null?+o:Math.round((SITE.base?.[s]??DP[s])*(h>=17?1.2:1))};
+const hh=h=>new Date(2000,0,1,h).toLocaleTimeString('en',{hour:'numeric'});
+const amt=b=>+(b.total??b.amount??b.amt??b.sum??(b.hrs||[]).reduce((s,h)=>s+price(b.sp,h),0));
+window.login=()=>signInWithEmailAndPassword(auth,$('#em').value,$('#pw').value).catch(e=>toast('Login ব্যর্থ'));
+window.side=v=>$('#side').classList.toggle('on',!!v);
+onAuthStateChanged(auth,u=>{if(u&&!ADMINS.includes(u.email)){toast('Admin না');signOut(auth);return}$('#login').style.display=u?'none':'grid';un.forEach(f=>f());un=[];if(u)start()});
+function start(){const w=(r,f)=>un.push(onSnapshot(r,s=>{f(s);draw()},e=>toast('Permission: '+e.code)));
+w(doc(db,'config','site'),s=>SITE=s.data()||{});w(doc(db,'config','payment'),s=>PAY=s.data()||{});
+w(collection(db,'plans'),s=>PLANS=s.docs.map(d=>({id:d.id,...d.data()})));w(collection(db,'events'),s=>EVS=s.docs.map(d=>({id:d.id,...d.data()})));
+w(collectionGroup(db,'bookings'),s=>BK=s.docs.map(d=>({...d.data(),_ref:d.ref,id:d.data().id||d.id,uid:d.ref.parent.parent.id})).sort((a,b)=>(b.c||0)-(a.c||0)));
+w(collection(db,'slots'),s=>SLOTS=s.docs.map(d=>({id:d.id,...d.data()})));
+w(collection(db,'finance'),s=>FIN=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.ts-a.ts))}
+function nav(){const f=(a,cls)=>[...NAV,...(cls==='s'||cls==='d'?MORE:[])].map(([k,n,i])=>`<button class="nv ${R===k?'on':''}" onclick="go('${k}')">${ic(i)}<span>${n}</span></button>`).join('');
+$('#bn').innerHTML=NAV.map(([k,n,i])=>`<button class="nv ${R===k?'on':''}" onclick="go('${k}')">${ic(i)}<span>${n}</span></button>`).join('');
+$('#sn').innerHTML='<div style="margin-bottom:12px;font:700 16px Oswald">MENU</div>'+MORE.map(([k,n,i])=>`<button class="nv ${R===k?'on':''}" onclick="${k==='out'?'logout()':`go('${k}')`}">${ic(i)}<span>${n}</span></button>`).join('');
+$('#dn').innerHTML=f('','d')}
+window.logout=()=>signOut(auth);window.go=k=>{R=k;side(0);scrollTo({top:0,behavior:'smooth'});draw()};
+/* ===== income/expense computations ===== */
+const bookInc=()=>BK.filter(b=>b.status==='approved').map(b=>({id:'b'+b.id,type:'in',amt:amt(b),sp:b.sp,ds:b.ds,hrs:b.hrs,note:(b.name||b.nm||'')+' বুকিং',ts:b.c||new Date(b.ds).getTime()}));
+const LEDGER=()=>[...bookInc(),...FIN].sort((a,b)=>b.ts-a.ts);
+function draw(){nav();const a=$('#app');if(!document.activeElement||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)){a.innerHTML=(P[R]||P.dash)()}}
+const P={
+dash(){const L=LEDGER(),i=L.filter(x=>x.type==='in').reduce((s,x)=>s+x.amt,0),o=L.filter(x=>x.type==='out').reduce((s,x)=>s+x.amt,0),pn=BK.filter(b=>b.status!=='approved'&&b.status!=='rejected').length;
+return`<h2>ড্যাশবোর্ড</h2><div class="grid"><div class="stat" onclick="FT='in';go('fin')"><small>মোট আয়</small><b class="in">৳${i}</b></div><div class="stat" onclick="FT='out';go('fin')"><small>মোট খরচ</small><b class="out">৳${o}</b></div><div class="stat" onclick="FT='all';go('fin')"><small>নেট লাভ</small><b>৳${i-o}</b></div><div class="stat" onclick="go('book')"><small>পেন্ডিং বুকিং</small><b style="color:var(--am)">${pn}</b></div></div>
+<div class="card" style="margin-top:14px"><h3>খেলা অনুযায়ী আয়</h3>${Object.keys(SPN).map(s=>`<div class="row"><span>${SPN[s]}</span><b class="in">৳${L.filter(x=>x.type==='in'&&x.sp===s).reduce((a,x)=>a+x.amt,0)}</b></div>`).join('')}</div>
+<div class="card"><h3>আয়/খরচ যোগ করুন</h3><div class="grid"><select id="ft"><option value="in">আয়</option><option value="out">খরচ</option></select><input id="fa" type="number" placeholder="টাকা"><input id="fn" placeholder="বিবরণ (যেমন: বিদ্যুৎ বিল)"></div><br><button class="btn" onclick="addFin()">যোগ করুন</button></div>`},
+book(){const t=['all','pending','approved','rejected'];const L=BK.filter(b=>FT==='all'||(FT==='pending'?b.status!=='approved'&&b.status!=='rejected':b.status===FT));
+return`<h2>বুকিং</h2><div class="tabs">${t.map(x=>`<button class="${(FT===x||(!t.includes(FT)&&x==='all'))?'on':''}" onclick="FT='${x}';draw()">${x}</button>`).join('')}</div><div class="card">${L.map(b=>`<div class="row"><div><b>${esc(b.name||b.nm||b.email||b.uid.slice(0,6))}</b> ${esc(b.phone||'')}<br><small style="color:var(--mu)">${SPN[b.sp]||b.sp} · ${esc(b.ds)} · ${(b.hrs||[]).map(hh).join(', ')} · ৳${amt(b)}</small></div><div><span class="tag ${b.status||'pending'}">${b.status||'pending'}</span> ${b.status!=='approved'?`<button class="btn s" onclick="setB('${b.uid}','${b.id}','approved')">Approve</button>`:''}${b.status!=='rejected'?`<button class="btn s r" onclick="setB('${b.uid}','${b.id}','rejected')">Reject</button>`:''}</div></div>`).join('')||'<p style="color:var(--mu)">কোনো বুকিং নেই</p>'}</div>`},
+slot(){const days=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return dk(d)});
+const hs=[...Array(17)].map((_,i)=>i+6);
+return`<h2>স্লট কন্ট্রোল</h2><div class="tabs">${Object.keys(SPN).map(s=>`<button class="${SP===s?'on':''}" onclick="SP='${s}';draw()">${SPN[s]}</button>`).join('')}</div><div class="tabs">${days.map(d=>`<button class="${DAY===d?'on':''}" onclick="DAY='${d}';draw()">${d.slice(5)}</button>`).join('')}</div>
+<p style="color:var(--mu);font-size:13px;margin-bottom:10px">ঘণ্টায় ক্লিক করুন → অপশন। সবুজ = বুকড, লাল = বন্ধ/ব্যস্ত।</p><div class="hrs">${hs.map(h=>{const id=slotId(SP,DAY,h),s=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&b.status!=='rejected');
+const c=s?.status==='busy'||s?.status==='closed'?'x '+s.status:(bk||s)?'b':'';return`<button class="sl ${c.split(' ')[0]}" onclick="slotMenu(${h})"><b>${hh(h)}</b><small>৳${price(SP,h)}</small><small>${bk?(esc(bk.name||bk.nm||'বুকড')):s?.status==='busy'?'ব্যস্ত':s?.status==='closed'?'বন্ধ':'খালি'}</small></button>`}).join('')}</div>
+<div class="card" style="margin-top:14px"><h3>${SPN[SP]} এর বেস প্রাইস</h3><input type="number" id="bp" value="${SITE.base?.[SP]??DP[SP]}"><small style="color:var(--mu)">সন্ধ্যা ৫টার পর +২০% অটো। নির্দিষ্ট ঘণ্টার দাম বদলাতে স্লটে ক্লিক করুন।</small><br><br><button class="btn" onclick="saveBase()">সেভ</button></div>`},
+edit(){const s=SITE,t=s.texts||{},sl=s.slides||['',''];
+return`<h2>হোম পেজ কনটেন্ট</h2><div class="card"><h3>স্লাইডশো ছবি (লিংক বসান)</h3>${[0,1].map(i=>`<label>ছবি ${i+1}</label><input id="sl${i}" value="${esc(sl[i]||'')}" oninput="$('#pv${i}').src=this.value"><img class="prev" id="pv${i}" src="${esc(sl[i]||'')}">`).join('')}</div>
+<div class="card"><h3>লেখা</h3><label>মেইন হেডলাইন</label><input id="t_h1" value="${esc(t.h1||'')}"><label>সাব টেক্সট</label><textarea id="t_hp" rows="3">${esc(t.hp||'')}</textarea><label>ফিচার ১–৪ (প্রতি লাইনে একটা)</label><textarea id="t_feat" rows="4">${esc((t.feat||[]).join('\n'))}</textarea><label>সুবিধাসমূহ (প্রতি লাইনে একটা)</label><textarea id="t_fac" rows="4">${esc((t.fac||[]).join('\n'))}</textarea></div>
+<div class="card"><h3>যোগাযোগ ও লোগো</h3><label>লোগো লিংক</label><input id="c_logo" value="${esc(s.logo||'')}"><label>ফোন</label><input id="c_tel" value="${esc(s.tel||'')}"><label>WhatsApp (880...)</label><input id="c_wa" value="${esc(s.wa||'')}"><label>ঠিকানা/ম্যাপ</label><input id="c_map" value="${esc(s.map||'')}"></div>
+<div class="card"><h3>কাস্টম ফিল্ড (নতুন যোগ/এডিট/ডিলিট)</h3>${(s.fields||[]).map((f,i)=>`<div class="row"><input style="flex:1" placeholder="নাম" value="${esc(f.k)}" onchange="fld(${i},'k',this.value)"><input style="flex:2" placeholder="মান" value="${esc(f.v)}" onchange="fld(${i},'v',this.value)"><button class="btn s r" onclick="fld(${i})">✕</button></div>`).join('')}<br><button class="btn o s" onclick="fld(-1)">+ নতুন ফিল্ড</button></div>
+<button class="btn" onclick="saveContent()">সব সেভ করুন</button>`},
+fin(){const L=LEDGER().filter(x=>FT==='all'||FT==='in'&&x.type==='in'||FT==='out'&&x.type==='out');
+return`<h2>আয়-ব্যয়ের হিস্ট্রি</h2><div class="tabs">${[['all','সব'],['in','আয়'],['out','খরচ']].map(([k,n])=>`<button class="${FT===k?'on':''}" onclick="FT='${k}';draw()">${n}</button>`).join('')}</div><div class="card">${L.map(x=>`<div class="row"><div>${esc(x.note||'')}<br><small style="color:var(--mu)">${new Date(x.ts).toLocaleString('bn-BD')}${x.sp?' · '+(SPN[x.sp]||x.sp)+' · '+esc(x.ds||'')+' · '+(x.hrs||[]).map(hh).join(','):''}</small></div><div><b class="${x.type==='in'?'in':'out'}">${x.type==='in'?'+':'−'}৳${x.amt}</b> ${String(x.id).startsWith('b')?'':`<button class="btn s r" onclick="del('finance','${x.id}')">✕</button>`}</div></div>`).join('')||'<p style="color:var(--mu)">কিছু নেই</p>'}</div>`},
+plans(){return mgr('plans','মেম্বারশিপ',PLANS,[['n','নাম'],['p','মাসিক দাম','number'],['off','ডিসকাউন্ট %','number'],['f','সুবিধা (কমা দিয়ে)']])},
+events(){return mgr('events','টুর্নামেন্ট',EVS,[['n','নাম'],['sp','খেলা (football/cricket/badminton)'],['date','তারিখ','date'],['hr','ঘণ্টা (0-23)','number'],['fee','ফি','number'],['spots','খালি সিট','number']])},
+pay(){return`<h2>পেমেন্ট নম্বর</h2><div class="card">${['bkash','nagad','upay','rocket'].map(k=>`<label>${k}</label><input id="p_${k}" value="${esc(PAY[k]||'')}">`).join('')}<br><br><button class="btn" onclick="savePay()">সেভ</button></div>`}};
+function mgr(col,title,list,f){return`<h2>${title}</h2>${list.map(x=>`<div class="card">${f.map(([k,n,t])=>`<label>${n}</label><input type="${t||'text'}" value="${esc(Array.isArray(x[k])?x[k].join(','):x[k])}" onchange="upd('${col}','${x.id}','${k}',this.value,'${t||''}')">`).join('')}<br><br><button class="btn s r" onclick="del('${col}','${x.id}')">ডিলিট</button></div>`).join('')}<button class="btn" onclick="addDoc2('${col}')">+ নতুন যোগ করুন</button>`}
+/* ===== actions ===== */
+window.upd=(c,id,k,v,t)=>ok(updateDoc(doc(db,c,id),{[k]:k==='f'?v.split(',').map(s=>s.trim()).filter(Boolean):t==='number'?+v:v}));
+window.addDoc2=c=>ok(addDoc(collection(db,c),c==='plans'?{n:'নতুন প্ল্যান',p:0,off:0,f:[]}:{n:'নতুন টুর্নামেন্ট',sp:'football',fee:0,spots:0,hr:18}));
+window.del=(c,id)=>confirm('ডিলিট করবেন?')&&ok(deleteDoc(doc(db,c,id)));
+window.addFin=()=>{const a=+$('#fa').value;if(!a)return toast('টাকা দিন');ok(addDoc(collection(db,'finance'),{type:$('#ft').value,amt:a,note:$('#fn').value,ts:Date.now()}));$('#fa').value=$('#fn').value=''};
+window.setB=async(uid,id,st)=>{const b=BK.find(x=>x.id===id),w=writeBatch(db);w.update(doc(db,'users',uid,'bookings',id),{status:st});
+(b.hrs||[]).forEach(h=>{const r=doc(db,'slots',slotId(b.sp,b.ds,h));st==='rejected'?w.delete(r):w.set(r,{uid,sp:b.sp,ds:b.ds,h,ts:new Date(b.ds).getTime(),bid:id,status:st},{merge:true})});ok(w.commit())};
+window.slotMenu=h=>{const id=slotId(SP,DAY,h),s=SLOTS.find(x=>x.id===id);const c=prompt(`${hh(h)} · ${DAY}\n1 = ব্যস্ত (Busy)\n2 = বন্ধ (Closed)\n3 = এই স্লট ফ্রি করুন\n4 = এই স্লটের দাম বদলান\n5 = নিজে বুক করে দিন (অফলাইন কাস্টমার)`);
+const base={uid:'admin',sp:SP,ds:DAY,h,ts:new Date(DAY).getTime()};
+if(c==='1'||c==='2')ok(setDoc(doc(db,'slots',id),{...base,status:c==='1'?'busy':'closed'}));
+else if(c==='3'){const bk=BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&b.status!=='rejected');if(bk)toast('আগে বুকিং Reject করুন');else ok(deleteDoc(doc(db,'slots',id)))}
+else if(c==='4'){const v=prompt('নতুন দাম (৳):',price(SP,h));if(v!==null&&v!=='')ok(setDoc(doc(db,'config','site'),{prices:{[SP]:{[h]:+v}}},{merge:true}))}
+else if(c==='5'){const n=prompt('কাস্টমারের নাম/ফোন:');if(n){const bid='A'+Date.now(),w=writeBatch(db);w.set(doc(db,'slots',id),{...base,bid,status:'approved'});w.set(doc(db,'users','admin','bookings',bid),{id:bid,sp:SP,ds:DAY,hrs:[h],name:n,total:price(SP,h),status:'approved',c:Date.now()});ok(w.commit())}}};
+window.saveBase=()=>ok(setDoc(doc(db,'config','site'),{base:{[SP]:+$('#bp').value}},{merge:true}));
+const ln=id=>$(id).value.split('\n').map(s=>s.trim()).filter(Boolean);
+window.saveContent=()=>ok(setDoc(doc(db,'config','site'),{slides:[$('#sl0').value.trim(),$('#sl1').value.trim()],texts:{h1:$('#t_h1').value,hp:$('#t_hp').value,feat:ln('#t_feat'),fac:ln('#t_fac')},logo:$('#c_logo').value.trim(),tel:$('#c_tel').value.trim(),wa:$('#c_wa').value.trim(),map:$('#c_map').value.trim()},{merge:true}));
+window.fld=(i,k,v)=>{const f=[...(SITE.fields||[])];if(i===-1)f.push({k:'',v:''});else if(k)f[i]={...f[i],[k]:v};else f.splice(i,1);ok(setDoc(doc(db,'config','site'),{fields:f},{merge:true}))};
+window.savePay=()=>ok(setDoc(doc(db,'config','payment'),Object.fromEntries(['bkash','nagad','upay','rocket'].map(k=>[k,$('#p_'+k).value.trim()])),{merge:true}));
+nav();
+</script></body></html>
