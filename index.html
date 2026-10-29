@@ -74,7 +74,7 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;str
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import{getFirestore,collection,collectionGroup,doc,setDoc,deleteDoc,onSnapshot,writeBatch,addDoc,updateDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const ADMINS=['YOUR_ADMIN_EMAIL@gmail.com']; /* <-- নিজের admin email */
+const ADMINS=['greenturf121@gmail.com']; /* <-- নিজের admin email */
 const app=initializeApp({apiKey:"AIzaSyCca1PWXnrW8XV_o69fyDdxelr1GM_yLi4",authDomain:"green-turf-86d36.firebaseapp.com",projectId:"green-turf-86d36",storageBucket:"green-turf-86d36.firebasestorage.app",messagingSenderId:"57008159263",appId:"1:57008159263:web:1a770c8f5b1c14bd9f732a"});
 const auth=getAuth(app),db=getFirestore(app);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>'&#'+c.charCodeAt(0)+';');
