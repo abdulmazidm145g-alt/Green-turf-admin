@@ -452,6 +452,4 @@ setInterval(()=>{if(R==='slot'&&!SM&&auth.currentUser)draw()},60000);
 window.savePay=()=>ok(setDoc(doc(db,'config','payment'),Object.fromEntries(['bkash','nagad','upay','rocket'].map(k=>[k,$('#p_'+k).value.trim()])),{merge:true}));
 window.draw=draw;window.$=$;Object.defineProperty(window,'FT',{get:()=>FT,set:v=>FT=v});Object.defineProperty(window,'SP',{get:()=>SP,set:v=>SP=v});Object.defineProperty(window,'DAY',{get:()=>DAY,set:v=>DAY=v});
 applyTheme();nav();
-</script></body></html>
-
-
+</script></body></html
