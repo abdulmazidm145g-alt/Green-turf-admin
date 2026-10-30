@@ -127,6 +127,18 @@ svg.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;str
 .supf textarea{border-radius:22px;padding:12px 16px;min-height:46px;line-height:1.3}
 .supf .snd{flex:none;width:46px;height:46px;padding:0;border-radius:50%}
 .supf .snd svg{width:22px;height:22px;fill:currentColor;stroke:none}
+
+/* ===== advance system ===== */
+.tag.adv{color:var(--g);border-color:var(--g)}.tag.hold{color:var(--am);border-color:var(--am)}.tag.cancelled,.tag.expired{color:var(--rd);border-color:var(--rd)}
+.chip{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--sf2);border:1px solid var(--ln);margin:6px 6px 0 0}.chip.in{color:var(--g)}.chip.dn{color:var(--am)}.chip.bd{color:var(--rd)}
+.bka{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#bm{position:fixed;inset:0;z-index:105;display:flex;align-items:flex-end;justify-content:center;background:#000b;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);opacity:0;visibility:hidden;transition:.25s}#bm.on{opacity:1;visibility:visible}
+.bmc{width:100%;max-width:500px;max-height:92vh;overflow:auto;background:var(--sf);border:1px solid var(--ln);border-bottom:0;border-radius:26px 26px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom,0px));transform:translateY(60px);transition:transform .35s cubic-bezier(.2,.9,.25,1.05)}#bm.on .bmc{transform:none}
+@media(min-width:700px){#bm{align-items:center}.bmc{border-bottom:1px solid var(--ln);border-radius:26px}}
+.bmh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+.bmt{margin:18px 0 8px;font-size:14px;color:var(--mu);text-transform:uppercase;letter-spacing:.06em}
+.bmg{display:grid;grid-template-columns:1.2fr 1fr 1.2fr;gap:8px}.bmg2{display:flex;gap:8px}.bmg2 input{flex:1}.bmg2 .btn{flex:1}
+.bmw{width:100%;margin-top:8px}
 </style></head><body>
 <div id="login"><div class="lg" id="lgc">
 <div class="lgb"><img src="https://i.postimg.cc/wvPVf1NX/24986-removebg-preview-(1).png" alt=""><h1>GREEN <span>TURF</span><br>ADMIN</h1><p data-t="আপনার টার্ফ ব্যবসার সম্পূর্ণ কন্ট্রোল|Full control of your turf business"></p><ul><li data-t="রিয়েল-টাইম বুকিং কন্ট্রোল|Real-time booking control" style="animation-delay:.2s"></li><li data-t="স্লট ও দাম ম্যানেজ|Manage slots and pricing" style="animation-delay:.3s"></li><li data-t="আয়-ব্যয় ও অ্যানালিটিক্স|Income, expense and analytics" style="animation-delay:.4s"></li></ul></div>
@@ -178,7 +190,24 @@ const hh=h=>new Date(2000,0,1,h).toLocaleTimeString(lang()==='bn'?'bn-BD':'en',{
 const amt=b=>+(b.tot??b.total??b.amount??b.amt??b.sum??(b.hrs||[]).reduce((s,h)=>s+price(b.sp,h),0));
 const ms=x=>x?.toMillis?x.toMillis():(+x||0),fd=t=>t?new Date(t).toLocaleString(lang()==='bn'?'bn-BD':'en',{dateStyle:'medium',timeStyle:'short'}):'—';
 const nm=b=>b.name||b.nm||USERS.find(u=>u.email&&u.email===b.u)?.name||b.u||b.email||(b.uid||'').slice(0,6);
-const isP=b=>b.status==='paid'||b.status==='free',isPend=b=>(b.status||'pending')==='pending';
+const isP=b=>b.status==='paid'||b.status==='free'||b.status==='adv',isPend=b=>['pending','hold'].includes(b.status||'pending');
+var BM=null,BMS='',BKI=0,SWP=new Set();
+const DEAD=['rejected','cancelled','expired'],live=b=>!DEAD.includes(b.status);
+const PPd=()=>{const n=(v,f)=>(v!=null&&v!==''&&Number.isFinite(+v)&&+v>=0)?+v:f;return{advOn:PAY.advOn!==false,adv:n(PAY.adv,500),advSp:PAY.advSp&&typeof PAY.advSp==='object'?PAY.advSp:{},cashOn:PAY.cashOn!==false,holdMin:+PAY.holdMin>0?+PAY.holdMin:30,refundHrs:n(PAY.refundHrs,12)}};
+const pays=b=>Array.isArray(b.pays)?b.pays:(isP(b)?[{a:amt(b),ts:b.c||new Date(b.ds).getTime(),k:'full'}]:[]);
+const paidNet=b=>pays(b).reduce((s,p)=>s+(+p.a||0),0);
+const dueOf=b=>DEAD.includes(b.status)?0:Math.max(0,amt(b)-paidNet(b));
+const bq=()=>BK.filter(b=>b.status==='pending'||b.status==='hold').length;
+const startOf=b=>{const d=new Date(b.ds);d.setHours(Math.min(...(b.hrs||[24])),0,0,0);return d.getTime()};
+const STL={pending:['যাচাই বাকি','To verify'],hold:['হোল্ড','On hold'],adv:['অগ্রিম পেইড','Advance paid'],free:['কনফার্মড','Confirmed'],paid:['পুরো পেইড','Fully paid'],cancelled:['বাতিল','Cancelled'],expired:['মেয়াদ শেষ','Expired'],rejected:['রিজেক্ট','Rejected']};
+const stl=b=>{const x=STL[b.status||'pending']||[b.status,b.status];return T(x[0],x[1])};
+const KL={adv:['অগ্রিম','Advance'],due:['বাকি','Due'],full:['পুরো টাকা','Full'],refund:['রিফান্ড','Refund'],forfeit:['বাজেয়াপ্ত (দেরিতে বাতিল)','Forfeited (late cancel)']};
+const cxInfo=b=>{const net=paidNet(b),m=net>0?net:((b.status==='cancelled'||b.status==='pending')?(+b.pa||0):0),c=b.cx||{};return{amt:m,rf:m>0&&(startOf(b)-(c.ts||0))>=PPd().refundHrs*36e5,done:!!c.done,kept:!!c.kept,net}};
+const stAfter=(b,net)=>{const t=amt(b);if(DEAD.includes(b.status))return b.status;if(t>0&&net>=t)return'paid';if(net>0)return'adv';return['pending','hold'].includes(b.status)?'free':b.status};
+const slotSet=(w,b,st)=>(b.hrs||[]).forEach(h=>w.set(doc(db,'slots',slotId(b.sp,b.ds,h)),{uid:b.uid,sp:b.sp,ds:b.ds,h,ts:new Date(b.ds).getTime(),bid:b.id,status:st},{merge:true}));
+const slotDel=(w,b)=>(b.hrs||[]).forEach(h=>w.delete(doc(db,'slots',slotId(b.sp,b.ds,h))));
+const bref=b=>doc(db,'users',b.uid,'bookings',b.id);
+const bget=(uid,id)=>BK.find(x=>x.id===id&&x.uid===uid);
 let LGBUSY=0;
 const lgMsg=c=>({'auth/invalid-credential':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/wrong-password':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/user-not-found':T('ইমেইল বা পাসওয়ার্ড ভুল','Wrong email or password'),'auth/invalid-email':T('সঠিক ইমেইল দিন','Enter a valid email'),'auth/too-many-requests':T('অনেকবার চেষ্টা করেছেন, একটু পরে আবার দিন','Too many attempts, try again later'),'auth/network-request-failed':T('ইন্টারনেট সংযোগ চেক করুন','Check your internet connection'),'auth/operation-not-allowed':T('Firebase এ Email/Password চালু নেই','Email/Password sign-in is not enabled in Firebase'),'not-admin':T('এই অ্যাকাউন্ট admin নয়','This account is not an admin')})[c]||T('লগইন ব্যর্থ হয়েছে','Sign in failed');
 function lgFail(m){LGBUSY=0;const b=$('#lgb'),c=$('#lgc');b.classList.remove('ld');b.disabled=false;$('#lgerr').textContent=m;c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
@@ -194,7 +223,7 @@ else{L.style.display='grid';void L.offsetWidth;L.classList.remove('out');b.class
 function start(){const w=(r,f)=>un.push(onSnapshot(r,s=>{f(s);draw()},e=>toast('Permission: '+e.code)));
 w(doc(db,'config','site'),s=>{SITE=s.data()||{};if(!DRD)DR=null});w(doc(db,'config','payment'),s=>PAY=s.data()||{});
 w(collection(db,'plans'),s=>PLANS=s.docs.map(d=>({id:d.id,...d.data()})));w(collection(db,'events'),s=>EVS=s.docs.map(d=>({id:d.id,...d.data()})));
-w(collectionGroup(db,'bookings'),s=>BK=s.docs.map(d=>({...d.data(),id:d.data().id||d.id,uid:d.ref.parent.parent.id})).sort((a,b)=>(b.c||0)-(a.c||0)));
+w(collectionGroup(db,'bookings'),s=>{const o=bq(),first=!BKI;BKI=1;BK=s.docs.map(d=>({...d.data(),id:d.data().id||d.id,uid:d.ref.parent.parent.id})).sort((a,b)=>(b.c||0)-(a.c||0));if(!first&&bq()>o)toast('\ud83d\udd14 '+T('নতুন বুকিং অনুরোধ','New booking request'))});
 un.push(onSnapshot(collection(db,'support'),s=>{const o=UNR();CHATS=s.docs.map(d=>({id:d.id,...d.data()}));if(UNR()>o&&R!=='support')toast('💬 '+T('নতুন সাপোর্ট মেসেজ','New support message'));draw();supRefresh()},e=>toast('Support: '+e.code)));
 w(collection(db,'slots'),s=>SLOTS=s.docs.map(d=>({id:d.id,...d.data()})));
 w(collection(db,'users'),s=>USERS=s.docs.map(d=>{const x=d.data();return{id:d.id,name:x.name||x.displayName||'',email:x.email||'',cr:ms(x.createdAt),ll:ms(x.lastLogin)}}));
@@ -204,9 +233,9 @@ const btn=(k,n,i,cls)=>`<button class="nv ${R===k?'on':''}" onclick="${k==='out'
 const unr=c=>c.un!=null?Math.max(0,(+c.un||0)-(+c.rn||0)):(c.lf==='u'&&(c.ts||0)>(c.seen||0)?1:0);const UNR=()=>CHATS.reduce((s,c)=>s+unr(c),0);let SUPFULL=0,SUPMK='',SUPH='';
 function nav(){const f=a=>a.map(([k,b,e,i])=>btn(k,T(b,e)+(k==='support'&&UNR()?' ('+UNR()+')':''),i)).join('');$('#bn').innerHTML=f(NAV);$('#sn').innerHTML='<div style="margin-bottom:12px;font:700 16px Oswald">MENU</div>'+f(MORE);$('#dn').innerHTML=f(NAV)+f(MORE)}
 window.logout=()=>{side(0);signOut(auth)};window.go=k=>{R=k;side(0);scrollTo({top:0,behavior:'smooth'});draw()};
-const bookInc=()=>BK.filter(isP).map(b=>({id:'b'+b.id,type:'in',amt:amt(b),sp:b.sp,ds:b.ds,hrs:b.hrs,note:nm(b)+' '+T('বুকিং','booking'),ts:b.c||new Date(b.ds).getTime()}));
+const bookInc=()=>BK.flatMap(b=>pays(b).map((p,i)=>({id:'b'+b.id+'_'+i,type:p.a<0?'out':'in',amt:Math.abs(+p.a||0),sp:b.sp,ds:b.ds,hrs:b.hrs,note:nm(b)+' '+T('বুকিং','booking')+' · '+T(...(KL[p.k]||['পেমেন্ট','Payment']))+(p.m?' · '+p.m:''),ts:p.ts||b.c||0})));
 const LEDGER=()=>[...bookInc(),...FIN].sort((a,b)=>b.ts-a.ts);
-function draw(){applyTheme();nav();const a=$('#app');if(R==='support'&&!SUPFULL&&$('#supl')){supRefresh();return}const force=SUPFULL;SUPFULL=0;if(force||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')){a.innerHTML=(P[R]||P.dash)()}}
+function draw(){applyTheme();nav();if(BM)bmRender();const a=$('#app');if(R==='support'&&!SUPFULL&&$('#supl')){supRefresh();return}const force=SUPFULL;SUPFULL=0;if(force||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName||'')){a.innerHTML=(P[R]||P.dash)()}}
 const days=n=>[...Array(n)].map((_,i)=>{const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-(n-1-i));return d});
 const bars=(a)=>{const m=Math.max(1,...a.map(x=>x.v));return`<div class="bars">${a.map(x=>`<div title="${x.v}"><span>${x.v||''}</span><i style="height:${x.v/m*85}%"></i><span>${x.l}</span></div>`).join('')}</div>`};
 const dl=d=>d.getDate();
@@ -218,7 +247,7 @@ return`<h2>${T('ড্যাশবোর্ড','Dashboard')}</h2><div class="gr
 <div class="card" style="margin-top:14px"><h3>${T('সাম্প্রতিক ইউজার অ্যাক্টিভিটি','Recent user activity')}</h3>${ev.map(e=>`<div class="row"><div><b>${esc(e.u.name||e.u.email||(e.u.id||'').slice(0,6))}</b><br><small>${esc(e.u.email||'')}</small></div><div style="text-align:end"><span class="tag ${e.k==='su'?'approved':''}">${e.k==='su'?T('সাইন আপ','Sign up'):T('সাইন ইন','Sign in')}</span><br><small>${fd(e.t)}</small></div></div>`).join('')||`<p class="mu">${T('কোনো ডেটা নেই','No data')}</p>`}</div>
 <div class="card"><h3>${T('খেলা অনুযায়ী আয়','Income by sport')}</h3>${SPORTS().map(s=>`<div class="row"><span>${sn(s.k)}</span><b class="in">৳${L.filter(x=>x.type==='in'&&x.sp===s.k).reduce((a,x)=>a+x.amt,0)}</b></div>`).join('')}</div>
 <div class="card"><h3>${T('আয়/খরচ যোগ করুন','Add income / expense')}</h3><div class="grid"><select id="ft"><option value="in">${T('আয়','Income')}</option><option value="out">${T('খরচ','Expense')}</option></select><input id="fa" type="number" placeholder="${T('টাকা','Amount')}"><input id="fn" placeholder="${T('বিবরণ','Note')}"></div><br><button class="btn" onclick="addFin()">${T('যোগ করুন','Add')}</button></div>`},
-ana(){const D=days(14),L=LEDGER(),sameD=(t,d)=>t>=d&&t<d.getTime()+864e5;const bc=BK.filter(b=>b.status!=='rejected'),buyers=new Set(BK.filter(isP).map(b=>b.uid));
+ana(){const D=days(14),L=LEDGER(),sameD=(t,d)=>t>=d&&t<d.getTime()+864e5;const bc=BK.filter(live),buyers=new Set(BK.filter(isP).map(b=>b.uid));
 const hrs={};bc.forEach(b=>(b.hrs||[]).forEach(h=>hrs[h]=(hrs[h]||0)+1));const top=Object.entries(hrs).sort((a,b)=>b[1]-a[1]).slice(0,5);
 const cu={};BK.filter(isP).forEach(b=>{const c=cu[b.uid]||(cu[b.uid]={n:nm(b),c:0,s:0});c.c++;c.s+=amt(b)});
 const rej=BK.length?Math.round(BK.filter(b=>b.status==='rejected').length/BK.length*100):0;
@@ -230,11 +259,22 @@ return`<h2>${T('অ্যানালিটিক্স ও রিপোর্�
 <div class="card"><h3>${T('খেলা অনুযায়ী বুকিং','Bookings by sport')}</h3>${SPORTS().map(s=>`<div class="row"><span>${sn(s.k)}</span><b>${bc.filter(b=>b.sp===s.k).length}</b></div>`).join('')}</div>
 <div class="card"><h3>${T('সেরা কাস্টমার','Top customers')}</h3>${Object.values(cu).sort((a,b)=>b.s-a.s).slice(0,8).map(c=>`<div class="row"><span>${esc(c.n)}</span><span><small>${c.c}x</small> <b class="in">৳${c.s}</b></span></div>`).join('')||`<p class="mu">${T('ডেটা নেই','No data')}</p>`}</div>
 <div class="card"><h3>${T('সব ইউজার','All users')} (${USERS.length})</h3>${[...USERS].sort((a,b)=>(b.cr||b.ll)-(a.cr||a.ll)).slice(0,60).map(u=>`<div class="row"><div><b>${esc(u.name||u.email)}</b><br><small>${esc(u.email)}</small></div><small style="text-align:end">${T('সাইন আপ','Joined')}: ${fd(u.cr)}<br>${T('শেষ লগইন','Last login')}: ${fd(u.ll)}</small></div>`).join('')}</div>`},
-book(){const t=['all','pending','paid','rejected'];const L=BK.filter(b=>FT==='all'||(FT==='pending'?isPend(b):FT==='paid'?isP(b):b.status===FT));
-return`<h2>${T('বুকিং','Bookings')}</h2><div class="tabs">${t.map(x=>`<button class="${FT===x||(!t.includes(FT)&&x==='all')?'on':''}" onclick="FT='${x}';draw()">${x}</button>`).join('')}</div><div class="card">${L.map(b=>`<div class="row"><div><b>${esc(nm(b))}</b> ${esc(b.phone||'')}<br><small>${sn(b.sp)} · ${esc(b.ds)} · ${(b.hrs||[]).map(hh).join(', ')} · ৳${amt(b)}</small></div><div><span class="tag ${b.status||'pending'}">${b.status||'pending'}</span> <small>${esc(b.txid||'')}</small> ${!isP(b)?`<button class="btn s" onclick="setB('${b.uid}','${b.id}','paid')">Approve</button>`:''} ${b.status!=='rejected'?`<button class="btn s r" onclick="setB('${b.uid}','${b.id}','rejected')">Reject</button>`:''}</div></div>`).join('')||`<p class="mu">${T('কোনো বুকিং নেই','No bookings')}</p>`}</div>`},
+book(){const tabs=[['all','সব','All'],['pending','যাচাই/হোল্ড','To verify'],['adv','বাকি আছে','Due'],['paid','পেইড','Paid'],['cancel','বাতিল','Cancelled'],['rejected','রিজেক্ট','Rejected']],ft=tabs.some(x=>x[0]===FT)?FT:'all';
+const f=b=>ft==='all'||(ft==='pending'?isPend(b):ft==='adv'?(isP(b)&&dueOf(b)>0):ft==='paid'?(isP(b)&&dueOf(b)===0):ft==='cancel'?(b.status==='cancelled'||b.status==='expired'):b.status===ft);
+const L=BK.filter(f),pc=BK.filter(isPend).length;
+return`<h2>${T('বুকিং','Bookings')}</h2><div class="tabs">${tabs.map(x=>`<button class="${ft===x[0]?'on':''}" onclick="FT='${x[0]}';draw()">${T(x[1],x[2])}${x[0]==='pending'&&pc?' ('+pc+')':''}</button>`).join('')}</div><div class="card">${L.map(b=>{const net=paidNet(b),due=dueOf(b),ci=cxInfo(b),u=`'${b.uid}','${b.id}'`;let ch='';
+if(b.status==='cancelled'){ch=ci.amt?`<span class="chip ${ci.rf?'dn':'bd'}">${ci.done?(ci.kept?T('রাখা হয়েছে ৳','Kept ৳'):T('রিফান্ড দেওয়া ৳','Refunded ৳'))+ci.amt:ci.rf?T('রিফান্ড বাকি ৳','Refund due ৳')+ci.amt:T('রিফান্ড নেই (দেরিতে) ৳','No refund (late) ৳')+ci.amt}</span>`:''}
+else if(b.status==='hold')ch=`<span class="chip dn">${T('হোল্ড শেষ ','Hold ends ')}${fd(b.hx)}</span>`;
+else if(live(b)){if(net)ch+=`<span class="chip in">${T('জমা ৳','Received ৳')}${net}</span>`;if(b.status==='pending'&&b.pa)ch+=`<span class="chip dn">${T('ইউজার বলছে পাঠিয়েছে ৳','User says sent ৳')}${b.pa}</span>`;else if(due)ch+=`<span class="chip dn">${T('বাকি ৳','Due ৳')}${due}</span>`}
+let q='';
+if(b.status==='pending')q+=`<button class="btn s" onclick="bkPay(${u},${b.pa||amt(b)},'${(b.pa||amt(b))>=amt(b)?'full':'adv'}','${esc(b.pm||'')}')">${T('অ্যাপ্রুভ ৳','Approve ৳')}${b.pa||amt(b)}</button>`;
+if(b.status==='hold')q+=`<button class="btn s" onclick="bkHold(${u})">${T('কনফার্ম','Confirm')}</button>`;
+if((b.status==='adv'||b.status==='free')&&due>0)q+=`<button class="btn s" onclick="bkPay(${u},${due},'due','Cash')">${T('বাকি নিন ৳','Collect ৳')}${due}</button>`;
+if(b.status==='cancelled'&&ci.amt&&!ci.done&&ci.rf)q+=`<button class="btn s" onclick="bkRefund(${u},${ci.amt})">${T('রিফান্ড দিলাম','Refunded')}</button>`;
+return`<div class="row"><div><b>${esc(nm(b))}</b> ${esc(b.phone||'')}<br><small>${sn(b.sp)} · ${esc(b.ds)} · ${(b.hrs||[]).map(hh).join(', ')} · ৳${amt(b)}${b.pm?' · '+esc(b.pm):''}${b.txid?' · '+esc(b.txid):''}</small><div>${ch}</div></div><div class="bka"><span class="tag ${b.status||'pending'}">${stl(b)}</span> ${q} <button class="btn s o" onclick="bmOpen(${u})">${T('ম্যানেজ','Manage')}</button></div></div>`}).join('')||`<p class="mu">${T('কোনো বুকিং নেই','No bookings')}</p>`}</div>`},
 slot(){const ds=[...Array(7)].map((_,i)=>{const d=new Date();d.setDate(d.getDate()+i);return d}),hs=[...Array(17)].map((_,i)=>i+6);if(!SPORTS().find(s=>s.k===SP))SP=SPORTS()[0]?.k;
 return`<h2>${T('স্লট কন্ট্রোল','Slot control')}</h2><div class="tabs">${SPORTS().map(s=>`<button class="${SP===s.k?'on':''}" onclick="SP='${s.k}';draw()">${sn(s.k)}</button>`).join('')}</div><div class="tabs">${ds.map(d=>{const k=dk(d);return`<button class="${DAY===k?'on':''}" onclick="DAY='${k}';draw()">${d.toLocaleDateString(lang()==='bn'?'bn-BD':'en',{weekday:'short',day:'numeric'})}</button>`}).join('')}</div>
-<p class="mu" style="font-size:13px;margin-bottom:10px">${T('ঘণ্টায় ক্লিক করুন। সবুজ = বুকড, লাল = বন্ধ/ব্যস্ত।','Tap an hour. Green = booked, red = busy/closed.')}</p><div class="hrs">${hs.map(h=>{const id=slotId(SP,DAY,h),s=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&b.status!=='rejected'),c=s?.status==='busy'||s?.status==='closed'?'x':(bk||s)?'b':'';return`<button class="sl ${c}" onclick="slotMenu(${h})"><b>${hh(h)}</b><small>৳${price(SP,h)}</small><small>${bk?esc(nm(bk)):s?.status==='busy'?T('ব্যস্ত','Busy'):s?.status==='closed'?T('বন্ধ','Closed'):T('খালি','Free')}</small></button>`}).join('')}</div>`},
+<p class="mu" style="font-size:13px;margin-bottom:10px">${T('ঘণ্টায় ক্লিক করুন। সবুজ = বুকড, লাল = বন্ধ/ব্যস্ত।','Tap an hour. Green = booked, red = busy/closed.')}</p><div class="hrs">${hs.map(h=>{const id=slotId(SP,DAY,h),s=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SP&&b.ds===DAY&&(b.hrs||[]).includes(h)&&live(b)),c=s?.status==='busy'||s?.status==='closed'?'x':(bk||s)?'b':'';return`<button class="sl ${c}" onclick="slotMenu(${h})"><b>${hh(h)}</b><small>৳${price(SP,h)}</small><small>${bk?esc(nm(bk)):s?.status==='busy'?T('ব্যস্ত','Busy'):s?.status==='closed'?T('বন্ধ','Closed'):T('খালি','Free')}</small></button>`}).join('')}</div>`},
 live(){const two=(id,lb,v,ve)=>`<label>${lb} — বাংলা</label><input id="${id}" value="${esc(v||'')}"><label>${lb} — English</label><input id="${id}e" value="${esc(ve||'')}">`,L=lvd(),lc=ms=>{if(!ms)return'';const d=new Date(+ms),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())},n=Date.now(),st=+L.st,du=(+L.du||90)*6e4,fi=(+L.fin||30)*6e4,state=!L.on||!st?T('ফলব্যাক (পরবর্তী টুর্নামেন্ট বক্স)','Fallback (next tournament box)'):n<st?T('কাউন্টডাউন চলছে','Countdown running'):n<st+du?T('🔴 লাইভ চলছে','🔴 Live now'):n<st+du+fi?T('ম্যাচ শেষ দেখাচ্ছে','Showing finished'):T('ফলব্যাক (পরবর্তী টুর্নামেন্ট বক্স)','Fallback (next tournament box)'),side=(k,ik,lb)=>`<div class="card"><h3>${lb}</h3><label>${T('ক্লাবের নাম','Club name')}</label><input value="${esc(L[k])}" oninput="lv('${k}',this.value)"><label>${T('ক্লাবের ছবি (লিংক)','Club image (link)')}</label><input value="${esc(L[ik])}" oninput="lv('${ik}',this.value);this.nextElementSibling.src=this.value"><img class="prev" src="${esc(L[ik])}"></div>`;
 return`<h2>${T('লাইভ ম্যাচ কন্ট্রোল','Live match control')}</h2><div class="card"><div class="row"><span>${T('বর্তমান অবস্থা','Current status')}</span><b class="in">${state}</b></div><label>${T('হোম পেজে দেখাবে?','Show on home page?')}</label><select onchange="lv('on',+this.value)"><option value="1" ${L.on?'selected':''}>${T('হ্যাঁ — চালু','Yes — On')}</option><option value="0" ${L.on?'':'selected'}>${T('না — বন্ধ','No — Off')}</option></select></div>
 ${side('cA','iA',T('ক্লাব A (বাম পাশ)','Club A (left)'))}${side('cB','iB',T('ক্লাব B (ডান পাশ)','Club B (right)'))}
@@ -256,7 +296,17 @@ fin(){const L=LEDGER().filter(x=>FT==='all'||FT===x.type);
 return`<h2>${T('আয়-ব্যয়ের হিস্ট্রি','Income & expense history')}</h2><div class="tabs">${[['all','সব','All'],['in','আয়','Income'],['out','খরচ','Expense']].map(([k,b,e])=>`<button class="${FT===k?'on':''}" onclick="FT='${k}';draw()">${T(b,e)}</button>`).join('')}</div><div class="card">${L.map(x=>`<div class="row"><div>${esc(x.note||'')}<br><small>${fd(x.ts)}${x.sp?' · '+sn(x.sp)+' · '+esc(x.ds||'')+' · '+(x.hrs||[]).map(hh).join(','):''}</small></div><div><b class="${x.type==='in'?'in':'out'}">${x.type==='in'?'+':'−'}৳${x.amt}</b> ${String(x.id).startsWith('b')?'':`<button class="btn s r" onclick="del('finance','${x.id}')">✕</button>`}</div></div>`).join('')||`<p class="mu">${T('কিছু নেই','Empty')}</p>`}</div>`},
 plans(){return mgr('plans',T('মেম্বারশিপ','Membership'),PLANS,[['n',T('নাম (বাংলা)','Name (Bangla)')],['ne','Name (English)'],['p',T('মাসিক দাম','Monthly price'),'number'],['off',T('ডিসকাউন্ট %','Discount %'),'number'],['f',T('সুবিধা বাংলা (কমা দিয়ে)','Perks Bangla (comma)')],['fe','Perks English (comma, same order)']])},
 events(){return mgr('events',T('টুর্নামেন্ট','Tournaments'),EVS,[['n',T('নাম (বাংলা)','Name (Bangla)')],['ne','Name (English)'],['sp','Sport key ('+SPORTS().map(x=>x.k).join('/')+')'],['date',T('তারিখ','Date'),'date'],['hr',T('ঘণ্টা (0-23)','Hour (0-23)'),'number'],['fee',T('ফি','Fee'),'number'],['spots',T('সিট','Spots'),'number']])},
-pay(){return`<h2>${T('পেমেন্ট নম্বর','Payment numbers')}</h2><div class="card">${['bkash','nagad','upay','rocket'].map(k=>`<label>${k}</label><input id="p_${k}" value="${esc(PAY[k]||'01892002275')}">`).join('')}<br><br><button class="btn" onclick="savePay()">${T('সেভ','Save')}</button></div>`},
+pay(){const P=PPd(),sel=(id,v)=>`<select id="${id}"><option value="1" ${v?'selected':''}>${T('চালু','On')}</option><option value="0" ${v?'':'selected'}>${T('বন্ধ','Off')}</option></select>`;
+return`<h2>${T('পেমেন্ট নম্বর','Payment numbers')}</h2><div class="card">${['bkash','nagad','upay','rocket'].map(k=>`<label>${k}</label><input id="p_${k}" value="${esc(PAY[k]||'01892002275')}">`).join('')}<br><br><button class="btn" onclick="savePay()">${T('সেভ','Save')}</button></div>
+<h2 style="margin-top:22px">${T('অগ্রিম পেমেন্ট ও বুকিং পলিসি','Advance payment & booking policy')}</h2><div class="card">
+<label>${T('অগ্রিম পেমেন্ট অপশন','Advance payment option')}</label>${sel('pp_advOn',P.advOn)}
+<label>${T('অগ্রিমের পরিমাণ (প্রতি বুকিং, ৳)','Advance amount (per booking, ৳)')}</label><input id="pp_adv" type="number" min="0" value="${P.adv}">
+<p class="mu" style="font-size:13px;margin:12px 0 0">${T('খেলা অনুযায়ী আলাদা অগ্রিম (ফাঁকা = উপরের সাধারণ অগ্রিম)','Advance per sport (blank = use the amount above)')}</p>
+${SPORTS().map(s=>`<label>${sn(s.k)}</label><input id="pp_sp_${s.k}" type="number" min="0" value="${P.advSp[s.k]??''}" placeholder="${T('সাধারণ','default')}">`).join('')}
+<label>${T('"মাঠে ক্যাশ" (হোল্ড) অপশন','"Pay at turf" (hold) option')}</label>${sel('pp_cashOn',P.cashOn)}
+<label>${T('হোল্ডের সময় (মিনিট)','Hold time (minutes)')}</label><input id="pp_holdMin" type="number" min="1" value="${P.holdMin}">
+<label>${T('রিফান্ডযোগ্য বাতিলের সময় (খেলার কত ঘণ্টা আগে)','Refundable cancel window (hours before game)')}</label><input id="pp_refundHrs" type="number" min="0" value="${P.refundHrs}">
+<p class="mu" style="font-size:13px;margin:10px 0 0">${T('এর কম সময় আগে বাতিল করলে জমা টাকা ফেরত হবে না।','Cancelling later than this means the deposit is not refunded.')}</p><br><button class="btn" onclick="savePolicy()">${T('সেভ','Save')}</button></div>`},
 set(){const sg=(v,cur,fn,l)=>`<div class="seg">${l.map(([k,n])=>`<button class="${cur===k?'on':''}" onclick="${fn}('${k}')">${n}</button>`).join('')}</div>`;
 return`<h2>${T('সেটিংস','Settings')}</h2><div class="card"><h3>${T('থিম','Theme')}</h3>${sg(0,TH,'setTh',[['system',T('ডিভাইস অনুযায়ী','Device')],['dark',T('ডার্ক','Dark')],['light',T('লাইট','Light')]])}</div><div class="card"><h3>${T('ভাষা','Language')}</h3>${sg(0,LG,'setLg',[['system',T('ডিভাইস অনুযায়ী','Device')],['bn','বাংলা'],['en','English']])}</div>`}};
 const DEFSOC=[{t:'wa',u:''},{t:'call',u:''},{t:'dir',u:''}];
@@ -297,7 +347,7 @@ window.addFin=()=>{const a=+$('#fa').value;if(!a)return toast(T('টাকা �
 window.setB=(uid,id,st)=>{const b=BK.find(x=>x.id===id),w=writeBatch(db);w.update(doc(db,'users',uid,'bookings',id),{status:st});(b.hrs||[]).forEach(h=>{const r=doc(db,'slots',slotId(b.sp,b.ds,h));st==='rejected'?w.delete(r):w.set(r,{uid,sp:b.sp,ds:b.ds,h,ts:new Date(b.ds).getTime(),bid:id,status:st},{merge:true})});ok(w.commit())};
 /* ===== advanced slot manager (popup) ===== */
 const HRS=[...Array(17)].map((_,i)=>i+6);let SM=null;
-const smSt=h=>{const id=slotId(SM.sp,SM.day,h),sl=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SM.sp&&b.ds===SM.day&&(b.hrs||[]).includes(h)&&b.status!=='rejected');return{sl,bk,st:bk||(sl&&sl.status!=='busy'&&sl.status!=='closed')?'booked':sl?sl.status:'free'}};
+const smSt=h=>{const id=slotId(SM.sp,SM.day,h),sl=SLOTS.find(x=>x.id===id),bk=BK.find(b=>b.sp===SM.sp&&b.ds===SM.day&&(b.hrs||[]).includes(h)&&live(b));return{sl,bk,st:bk||(sl&&sl.status!=='busy'&&sl.status!=='closed')?'booked':sl?sl.status:'free'}};
 const smEl=()=>{let e=$('#sm');if(!e){e=document.createElement('div');e.id='sm';e.onclick=ev=>{if(ev.target===e)smClose()};document.body.appendChild(e)}return e};
 function smRender(){if(!SM)return;const hs=[...SM.sel].sort((a,b)=>a-b),bks=[];
 hs.forEach(h=>{const x=smSt(h);if(x.bk&&!bks.find(b=>b.id===x.bk.id))bks.push(x.bk)});
@@ -346,6 +396,57 @@ if(await ok(w.commit()))smClose()};
 const ln=id=>$(id).value.split('\n').map(s=>s.trim()).filter(Boolean);
 window.saveContent=async()=>{const D=dr(),g=i=>$('#'+i).value;const r=await ok(setDoc(doc(db,'config','site'),{slides:D.slides.map(x=>String(x).trim()).filter(Boolean),texts:{...Object.fromEntries(['secSp','secSpS','ftD','contact','locTxt','hours','cpr'].flatMap(k=>[[k,g('t_'+k)],[k+'e',g('t_'+k+'e')]])),h1:g('t_h1'),h1e:g('t_h1e'),hp:g('t_hp'),hpe:g('t_hpe'),feat:ln('#t_feat'),feate:ln('#t_feate'),fac:ln('#t_fac'),face:ln('#t_face')},logo:g('c_logo').trim(),tel:g('c_tel').trim(),ftn:ln('#c_ftn'),wa:g('c_wa').trim(),map:g('c_map').trim(),sports:D.sports,addons:D.addons,fields:D.fields.filter(f=>f.k),soc:D.soc.filter(s=>s.t)},{merge:true}));if(r){DRD=0;DR=null}};
 window.fld=(i,k,v)=>{const f=dr().fields;DRD=1;if(i===-1)f.push({k:'',v:''});else if(k)f[i][k]=v;else f.splice(i,1);if(i===-1||!k)draw()};
+
+/* ===== advance / due / refund system ===== */
+window.savePolicy=()=>{const n=id=>{const v=$('#'+id).value.trim();return v===''?null:Math.max(0,+v||0)};const sp={};SPORTS().forEach(s=>{const v=n('pp_sp_'+s.k);if(v)sp[s.k]=v});
+ return ok(setDoc(doc(db,'config','payment'),{advOn:$('#pp_advOn').value==='1',adv:n('pp_adv')??0,advSp:sp,cashOn:$('#pp_cashOn').value==='1',holdMin:n('pp_holdMin')||30,refundHrs:n('pp_refundHrs')??12},{mergeFields:['advOn','adv','advSp','cashOn','holdMin','refundHrs']}))};
+window.bkPay=async(uid,id,a,k,m)=>{const b=bget(uid,id);a=Math.round(+a);if(!b)return;if(!(a>0))return toast(T('টাকার পরিমাণ দিন','Enter an amount'));if(DEAD.includes(b.status))return;
+ const base=pays(b),t=amt(b),net0=base.reduce((s,p)=>s+(+p.a||0),0);if(net0+a>t&&!confirm(T('মোট টাকার চেয়ে বেশি জমা হচ্ছে, তবুও সেভ করবেন?','This is more than the booking total. Save anyway?')))return;
+ const np=[...base,{a,ts:Date.now(),k:k||(net0>0?'due':(a>=t?'full':'adv')),m:m||''}],net=np.reduce((s,p)=>s+(+p.a||0),0),st=stAfter(b,net),w=writeBatch(db);
+ w.update(bref(b),{pays:np,pd:net,status:st});slotSet(w,b,'paid');if(await ok(w.commit()))BMS=''};
+window.bkHold=async(uid,id)=>{const b=bget(uid,id);if(!b)return;const w=writeBatch(db);w.update(bref(b),{status:'free',pays:Array.isArray(b.pays)?b.pays:[],pd:Array.isArray(b.pays)?paidNet(b):0});slotSet(w,b,'paid');if(await ok(w.commit()))BMS=''};
+window.bkRefund=async(uid,id,a)=>{const b=bget(uid,id);a=Math.round(+a);if(!b)return;if(!(a>0))return toast(T('টাকার পরিমাণ দিন','Enter an amount'));
+ const base=pays(b),net0=base.reduce((s,p)=>s+(+p.a||0),0),upd={};let r=a;
+ if(net0>0){r=Math.min(a,net0);const np=[...base,{a:-r,ts:Date.now(),k:'refund',m:''}],net=np.reduce((s,p)=>s+(+p.a||0),0);upd.pays=np;upd.pd=net;if(b.status!=='cancelled')upd.status=stAfter(b,net)}
+ else if(b.status!=='cancelled')return toast(T('ফেরত দেওয়ার মতো জমা নেই','Nothing received to refund'));
+ if(b.status==='cancelled')upd.cx={...(b.cx||{}),done:true,amt:r};
+ if(await ok(updateDoc(bref(b),upd)))BMS=''};
+window.bkKeep=async(uid,id)=>{const b=bget(uid,id),c=b&&cxInfo(b);if(!b||!c.amt)return;const np=[...pays(b),{a:c.amt,ts:Date.now(),k:'forfeit',m:b.pm||''}],net=np.reduce((s,p)=>s+(+p.a||0),0);
+ if(await ok(updateDoc(bref(b),{pays:np,pd:net,cx:{...(b.cx||{}),done:true,kept:true,amt:c.amt}})))BMS=''};
+window.bkCancel=async(uid,id,refund)=>{const b=bget(uid,id);if(!b||!confirm(T('এই বুকিং বাতিল করবেন?','Cancel this booking?')))return;const c=cxInfo(b),w=writeBatch(db);slotDel(w,b);
+ w.update(bref(b),{status:'cancelled',cx:{ts:Date.now(),rf:!!refund&&c.amt>0,amt:c.amt,done:false,by:'admin'}});if(await ok(w.commit()))BMS=''};
+window.bkReject=async(uid,id)=>{const b=bget(uid,id);if(!b||!confirm(T('রিজেক্ট করবেন? স্লট খালি হয়ে যাবে।','Reject this booking? The slot will be freed.')))return;const w=writeBatch(db);slotDel(w,b);w.update(bref(b),{status:'rejected'});if(await ok(w.commit()))BMS=''};
+window.bkDelete=async(uid,id)=>{const b=bget(uid,id);if(!b||!confirm(T('বুকিংয়ের রেকর্ড মুছে ফেলবেন? এটা আর ফেরানো যাবে না।','Delete this booking record permanently?')))return;const w=writeBatch(db);slotDel(w,b);w.delete(bref(b));if(await ok(w.commit()))bmClose()};
+window.bmRecv=()=>{if(!BM)return;bkPay(BM.uid,BM.id,$('#bm_a').value,$('#bm_k').value||undefined,$('#bm_m').value)};
+window.bmRef=()=>{if(BM)bkRefund(BM.uid,BM.id,$('#bm_r').value)};
+window.bmOpen=(uid,id)=>{BM={uid,id};BMS='';bmRender();$('#bm').classList.add('on')};
+window.bmClose=()=>{BM=null;$('#bm').classList.remove('on')};
+function bmRender(){const el=$('#bmc'),b=BM&&bget(BM.uid,BM.id);if(!el)return;if(!b){if(BM)bmClose();return}
+ const sig=JSON.stringify([b.status,b.pays,b.pa,b.cx,b.hx,b.tot]);if(sig===BMS)return;BMS=sig;
+ const net=paidNet(b),tt=amt(b),due=dueOf(b),dead=DEAD.includes(b.status),ps=pays(b),u=`'${b.uid}','${b.id}'`,ci=cxInfo(b),r=(l,v,c)=>`<div class="row"><span class="mu">${l}</span><b class="${c||''}">${v}</b></div>`;
+ let h=`<div class="bmh"><div><b style="font-size:18px">${esc(nm(b))}</b> <span class="tag ${b.status||'pending'}">${stl(b)}</span><br><small class="mu">#${esc(b.id)}${b.phone?' · '+esc(b.phone):''}</small></div><button class="btn o s" onclick="bmClose()">✕</button></div>`;
+ h+=r(T('খেলা','Game'),`${sn(b.sp)} · ${esc(b.ds)} · ${(b.hrs||[]).map(hh).join(', ')}`)+r(T('মাধ্যম','Method'),esc(b.pm||'—')+(b.txid?' · '+esc(b.txid):''))+r(T('মোট','Total'),'৳'+tt);
+ if(b.adv)h+=r(T('নির্ধারিত অগ্রিম','Advance asked'),'৳'+b.adv);
+ if(b.status==='pending'&&b.pa)h+=r(T('ইউজার বলছে পাঠিয়েছে','User says sent'),'৳'+b.pa);
+ h+=r(T('জমা হয়েছে','Received'),'৳'+net,'in');if(!dead)h+=r(T('বাকি','Due'),'৳'+due,due?'out':'in');
+ if(b.status==='hold')h+=r(T('হোল্ড শেষ','Hold ends'),fd(b.hx));
+ if(ps.length)h+=`<h4 class="bmt">${T('লেনদেন','Payments')}</h4>`+ps.map(p=>`<div class="row"><span>${T(...(KL[p.k]||['পেমেন্ট','Payment']))}${p.m?' · '+esc(p.m):''}<br><small class="mu">${fd(p.ts)}</small></span><b class="${p.a<0?'out':'in'}">${p.a<0?'−':'+'}৳${Math.abs(p.a)}</b></div>`).join('');
+ if(!dead){
+  h+=`<h4 class="bmt">${b.status==='pending'?T('অ্যাপ্রুভ ও টাকা জমা','Approve & receive payment'):T('টাকা জমা নিন','Receive payment')}</h4><div class="bmg"><input id="bm_a" type="number" min="1" value="${b.status==='pending'&&b.pa?b.pa:(due||'')}" placeholder="৳"><select id="bm_k"><option value="">${T('অটো','Auto')}</option><option value="adv">${T('অগ্রিম','Advance')}</option><option value="due">${T('বাকি','Due')}</option><option value="full">${T('পুরো','Full')}</option></select><select id="bm_m">${['Cash','bKash','Nagad','Upay','Rocket','Card'].map(x=>`<option ${b.pm===x?'selected':''}>${x}</option>`).join('')}</select></div><button class="btn bmw" onclick="bmRecv()">${b.status==='pending'?T('অ্যাপ্রুভ করুন','Approve'):T('জমা নিন','Receive')}</button>`;
+  if(b.status==='hold')h+=`<button class="btn o bmw" onclick="bkHold(${u})">${T('কনফার্ম (মাঠে পেমেন্ট)','Confirm (pay at turf)')}</button>`;
+  if(net>0)h+=`<h4 class="bmt">${T('রিফান্ড','Refund')}</h4><div class="bmg2"><input id="bm_r" type="number" min="1" value="${net}"><button class="btn o" onclick="bmRef()">${T('রিফান্ড দিন','Refund')}</button></div>`;
+  h+=`<h4 class="bmt">${T('বাতিল','Cancel')}</h4><div class="bmg2">${net>0?`<button class="btn r" onclick="bkCancel(${u},true)">${T('বাতিল + রিফান্ড','Cancel + refund')}</button><button class="btn o" onclick="bkCancel(${u},false)">${T('বাতিল (রিফান্ড ছাড়া)','Cancel, no refund')}</button>`:`<button class="btn r" onclick="bkCancel(${u},false)">${T('বুকিং বাতিল','Cancel booking')}</button>`}</div>`;
+  if(isPend(b))h+=`<button class="btn r bmw" onclick="bkReject(${u})">${T('রিজেক্ট (পেমেন্ট ভুয়া/ভুল)','Reject (payment invalid)')}</button>`;
+ }else if(b.status==='cancelled'){
+  h+=`<h4 class="bmt">${T('রিফান্ড অবস্থা','Refund status')}</h4>`+r(T('পলিসি অনুযায়ী','By policy'),ci.amt?(ci.rf?T('রিফান্ডযোগ্য ৳','Refundable ৳')+ci.amt:T('রিফান্ড নেই (দেরিতে বাতিল)','Not refundable (late cancel)')):'—',ci.rf?'in':'out');
+  if(ci.amt&&!ci.done){h+=`<div class="bmg2"><input id="bm_r" type="number" min="1" value="${ci.amt}"><button class="btn" onclick="bmRef()">${ci.rf?T('রিফান্ড দিলাম','Mark refunded'):T('তবুও রিফান্ড','Refund anyway')}</button></div>`;if(!ci.rf&&ci.net===0)h+=`<button class="btn o bmw" onclick="bkKeep(${u})">${T('টাকাটা আয় হিসেবে রাখুন ৳','Keep as income ৳')}${ci.amt}</button>`}
+  else if(ci.done)h+=r(T('অবস্থা','Status'),ci.kept?T('আয় হিসেবে রাখা হয়েছে','Kept as income'):T('রিফান্ড দেওয়া হয়েছে','Refunded'),'in');
+ }
+ h+=`<button class="btn o bmw" style="margin-top:18px;color:var(--rd)" onclick="bkDelete(${u})">${T('রেকর্ড মুছুন','Delete record')}</button>`;
+ el.innerHTML=h}
+document.body.insertAdjacentHTML('beforeend','<div id="bm" onclick="if(event.target===this)bmClose()"><div class="bmc" id="bmc"></div></div>');
+function sweep(){const n=Date.now();BK.forEach(b=>{if(b.status==='hold'&&b.hx&&b.hx<n&&!SWP.has(b.id)){SWP.add(b.id);const w=writeBatch(db);slotDel(w,b);w.update(bref(b),{status:'expired'});w.commit().catch(()=>SWP.delete(b.id))}})}
+setInterval(()=>{if(auth.currentUser)sweep()},20000);
 window.savePay=()=>ok(setDoc(doc(db,'config','payment'),Object.fromEntries(['bkash','nagad','upay','rocket'].map(k=>[k,$('#p_'+k).value.trim()])),{merge:true}));
 window.draw=draw;window.$=$;Object.defineProperty(window,'FT',{get:()=>FT,set:v=>FT=v});Object.defineProperty(window,'SP',{get:()=>SP,set:v=>SP=v});Object.defineProperty(window,'DAY',{get:()=>DAY,set:v=>DAY=v});
 applyTheme();nav();
